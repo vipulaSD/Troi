@@ -9,4 +9,22 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="connect_e4">Connect E4</string>
+    <string name="status_e4_not_connected">Empatica E4: Not connected</string>
+    <string name="status_e4_search_device">Empatica E4: searching for a device</string>
+    <string name="status_e4_already_sesarching">Empatica E4: Error Connecting: Scan failed: a BLE scan with the same settings is already started by the app</string>
+    <string name="status_e4_registration">Empatica E4: Scan failed: app cannot be registered</string>
+    <string name="status_e4_power_error">Empatica E4: Scan failed: power optimized scan feature is not supported</string>
+    <string name="status_e4_internal_error">Empatica E4: Scan failed: internal error</string>
+    <string name="status_e4_other_error">Empatica E4: Scan failed with unknown error</string>
+    <string name="status_e4_connected">Empatica E4: Connected</string>
+    <string name="status_e4_connecting">Empatica E4: Connecting to the device</string>
+    <string name="e4_ready">E4: Ready</string>
+    <string name="e4_initial">E4: Initial</string>
+    <string name="e4_disconnected">E4: Disconnected</string>
+    <string name="e4_connecting">E4: Connecting</string>
+    <string name="e4_connected">E4: Connected</string>
+    <string name="e4_disconnecting">E4: Disconnecting</string>
+    <string name="e4_discovering">E4: Discovering</string>
+    <string name="make_prediction">Make a Prediction</string>
 </resources>
