@@ -3,6 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_arousal_0.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_arousal_1.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_arousal_2.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_arousal_3.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_arousal_4.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_valence_0.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_valence_1.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_valence_2.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_valence_3.xml" value="0.3234375" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/drawable/ic_valence_4.xml" value="0.3234375" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/activity_self_report.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/content_main.xml" value="0.33177083333333335" />
@@ -11,7 +21,7 @@
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_categorical.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_categorical_self_report.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_first.xml" value="0.33177083333333335" />
-        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_n_p_self_report.xml" value="0.5546875" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_n_p_self_report.xml" value="0.22" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_self_report_categorical.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/menu_main.xml" value="0.5546875" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/navigation_menu.xml" value="0.5546875" />

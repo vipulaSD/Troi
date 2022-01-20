@@ -11,7 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Troi"
         tools:replace="android:theme">
-        <activity android:name=".SelfReportActivity"/>
+        <activity
+            android:name=".SystemPredictionActivity"
+            android:exported="false" />
+        <activity android:name=".SelfReportActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -24,11 +27,10 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
 </manifest>

@@ -34,12 +34,12 @@
     <string name="nav_close">Close</string>
     <string name="self_report">Self Report</string>
     <string name="self_report_title">How Do You Feel Now?</string>
-    <string name="emo_cheerful">Cheerful</string>
-    <string name="emo_happy">Happy</string>
-    <string name="emo_angry">Angry</string>
-    <string name="emo_nervous">Nervous</string>
-    <string name="emo_sad">Sad</string>
-    <string name="emo_neutral">Neutral</string>
+    <string name="emo_cheerful">Cheerful 🤗</string>
+    <string name="emo_happy">Happy 😊</string>
+    <string name="emo_angry">Angry 👿</string>
+    <string name="emo_nervous">Nervous 😰</string>
+    <string name="emo_sad">Sad 😥</string>
+    <string name="emo_neutral">Neutral 😐</string>
     <string name="emo_non">None of Above</string>
     <string name="submit_report">Submit Report</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -49,4 +49,6 @@
     <string name="enter_participant_id">Enter Participant ID</string>
     <string name="enter_password">Enter Password</string>
     <string name="confirm">Confirm</string>
+    <string name="arousal">Arousal</string>
+    <string name="valence">Valence</string>
 </resources>
