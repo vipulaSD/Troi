@@ -3,9 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/activity_main.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/activity_self_report.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/content_main.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/dialog_enter_pid.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/dialog_get_pid.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_categorical.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_categorical_self_report.xml" value="0.33177083333333335" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_first.xml" value="0.33177083333333335" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_n_p_self_report.xml" value="0.5546875" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/layout/fragment_self_report_categorical.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/menu_main.xml" value="0.5546875" />
+        <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/navigation_menu.xml" value="0.5546875" />
       </map>
     </option>
   </component>

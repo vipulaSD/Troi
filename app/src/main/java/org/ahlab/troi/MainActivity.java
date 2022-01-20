@@ -3,8 +3,10 @@ package org.ahlab.troi;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.le.ScanCallback;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,10 +14,14 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -64,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 	private EvictingQueue<Double> accelYQueue;
 	private EvictingQueue<Double> accelZQueue;
 
+	private ActionBarDrawerToggle actionBarDrawerToggle;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,18 +79,64 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		setSupportActionBar(binding.toolbar);
+		actionBarDrawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.nav_open, R.string.nav_close);
+		binding.drawerLayout.addDrawerListener(actionBarDrawerToggle);
+		actionBarDrawerToggle.syncState();
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 
 		initModel();
 		initQueues();
+		initView();
+		initButtons();
+		initMenu();
 
-		binding.tvStatus.setText(R.string.status_e4_not_connected);
+	}
 
+	private void initMenu() {
+		SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
+		String pid = sharedPreferences.getString(getString(R.string.key_pid), "P -1");
+
+		Menu menu = binding.navMenu.getMenu();
+		MenuItem pidMenuItem = menu.findItem(R.id.nav_pid);
+		if (pid.equals("P -1")) {
+			pidMenuItem.setTitle("Set Participant ID");
+		} else {
+			pidMenuItem.setTitle("Participant ID: " + pid);
+		}
+
+		pidMenuItem.setOnMenuItemClickListener(menuItem -> {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			final EditText txtPid = new EditText(getApplicationContext());
+
+			builder.setTitle("Enter Participant ID");
+			LinearLayout linearLayout = new LinearLayout(this);
+			linearLayout.setOrientation(LinearLayout.VERTICAL);
+			linearLayout.addView(txtPid);
+			builder.setView(linearLayout);
+
+			builder.setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
+				String pid1 = txtPid.getText().toString().trim();
+				if (!pid1.isEmpty()) {
+					sharedPreferences.edit().putString(getString(R.string.key_pid), pid1).apply();
+					pidMenuItem.setTitle("Participant ID: " + pid1);
+				}
+			}).setNegativeButton("cancel", (dialogInterface, i) -> dialogInterface.cancel());
+			builder.show();
+
+			return false;
+		});
+	}
+
+	private void initButtons() {
+		// connecting empatica device
 		binding.btnConnect.setOnClickListener(view -> {
 			initEmpaticaDeviceManager();
 			binding.tvStatus.setText(R.string.status_e4_search_device);
 		});
 
+		//prediction button
 		binding.btnPrediction.setOnClickListener(view -> {
 			if ((accelXQueue.remainingCapacity() + edaQueue.remainingCapacity() + bvpQueue.remainingCapacity() + tempQueue.remainingCapacity()) == 0) {
 				makePrediction();
@@ -92,26 +146,11 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
 		});
 
-	}
-
-	private void initQueues() {
-		edaQueue = EvictingQueue.create(16);
-		tempQueue = EvictingQueue.create(16);
-		bvpQueue = EvictingQueue.create(256);
-		accelXQueue = EvictingQueue.create(128);
-		accelYQueue = EvictingQueue.create(128);
-		accelZQueue = EvictingQueue.create(128);
-	}
-
-	private void initModel() {
-		MappedByteBuffer tfliteModel = null;
-		try {
-			tfliteModel = FileUtil.loadMappedFile(getApplicationContext(), "model.tflite");
-			tflite = new InterpreterFactory().create(tfliteModel, new InterpreterApi.Options());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		//self report button
+		binding.btnReport.setOnClickListener(view -> {
+			Intent intent = new Intent(this, SelfReportActivity.class);
+			startActivity(intent);
+		});
 	}
 
 	private void initEmpaticaDeviceManager() {
@@ -250,20 +289,44 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 		return ret;
 	}
 
+	private void initView() {
+		binding.tvStatus.setText(R.string.status_e4_not_connected);
+	}
+
+	private void initQueues() {
+		edaQueue = EvictingQueue.create(16);
+		tempQueue = EvictingQueue.create(16);
+		bvpQueue = EvictingQueue.create(256);
+		accelXQueue = EvictingQueue.create(128);
+		accelYQueue = EvictingQueue.create(128);
+		accelZQueue = EvictingQueue.create(128);
+	}
+
+	private void initModel() {
+		MappedByteBuffer tfliteModel = null;
+		try {
+			tfliteModel = FileUtil.loadMappedFile(getApplicationContext(), "model.tflite");
+			tflite = new InterpreterFactory().create(tfliteModel, new InterpreterApi.Options());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	@Override
 	protected void onStop() {
 		super.onStop();
 		if (deviceManager != null) {
-			deviceManager.startScanning();
+			deviceManager.stopScanning();
 		}
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (deviceManager != null) {
-			deviceManager.cleanUp();
-		}
+//		if (deviceManager != null) {
+//			deviceManager.cleanUp();
+//		}
 	}
 
 	@Override
@@ -279,26 +342,22 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 				new AlertDialog.Builder(this)
 						.setTitle("Permission required")
 						.setMessage("Without this permission bluetooth low energy devices cannot be found, allow it in order to connect to the device.")
-						.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								// try again
-								if (needRationale) {
-									// the "never ask again" flash is not set, try again with permission request
-									initEmpaticaDeviceManager();
-								} else {
-									// the "never ask again" flag is set so the permission requests is disabled, try open app settings to enable the permission
-									Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-									Uri uri = Uri.fromParts("package", getPackageName(), null);
-									intent.setData(uri);
-									startActivity(intent);
-								}
+						.setPositiveButton("Retry", (dialog, which) -> {
+							// try again
+							if (needRationale) {
+								// the "never ask again" flash is not set, try again with permission request
+								initEmpaticaDeviceManager();
+							} else {
+								// the "never ask again" flag is set so the permission requests is disabled, try open app settings to enable the permission
+								Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+								Uri uri = Uri.fromParts("package", getPackageName(), null);
+								intent.setData(uri);
+								startActivity(intent);
 							}
 						})
-						.setNegativeButton("Exit application", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								// without permission exit is the only way
-								finish();
-							}
+						.setNegativeButton("Exit application", (dialog, which) -> {
+							// without permission exit is the only way
+							finish();
 						})
 						.show();
 			}
@@ -314,16 +373,9 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
+		if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -376,16 +428,18 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 				break;
 			case READY:
 				deviceManager.startScanning();
-				binding.tvStatus.setText(R.string.e4_ready);
+				binding.tvStatus.setText(R.string.e4_scan);
 				break;
 			case DISCONNECTED:
 				binding.tvStatus.setText(R.string.e4_disconnected);
+				binding.btnConnect.setVisibility(View.VISIBLE);
 				break;
 			case CONNECTING:
 				binding.tvStatus.setText(R.string.e4_connecting);
 				break;
 			case CONNECTED:
 				binding.tvStatus.setText(R.string.e4_connected);
+				binding.btnConnect.setVisibility(View.INVISIBLE);
 				break;
 			case DISCONNECTING:
 				binding.tvStatus.setText(R.string.e4_disconnecting);
@@ -398,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
 	@Override
 	public void didEstablishConnection() {
-		binding.btnConnect.setText(R.string.status_e4_connected);
+		binding.tvStatus.setText(R.string.e4_established);
 	}
 
 	@Override

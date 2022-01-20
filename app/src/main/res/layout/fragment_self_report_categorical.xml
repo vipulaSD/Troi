@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelfReportCategoricalFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_submit_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_report"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/self_report_title"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/chip_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleLine="false"
+            app:singleSelection="true">
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_happy"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_happy"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_sad"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_sad"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_angry"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_angry"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_nervous"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_nervous"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cheerful"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_cheerful"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_neutral"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_neutral"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_non"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/emo_non"
+                tools:layout_editor_absoluteX="204dp"
+                tools:layout_editor_absoluteY="550dp" />
+        </com.google.android.material.chip.ChipGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

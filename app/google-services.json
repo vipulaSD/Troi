@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "10720360216",
+    "project_id": "troi-1ffd1",
+    "storage_bucket": "troi-1ffd1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10720360216:android:713bae32cf770654c0506d",
+        "android_client_info": {
+          "package_name": "org.ahlab.troi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10720360216-0tm0gba7r6t6h8jj35iopp94bhdisrkp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJm6KVcKLqd4Puypmsv2tBoTeaNR0pvkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10720360216-0tm0gba7r6t6h8jj35iopp94bhdisrkp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
