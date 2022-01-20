@@ -23,6 +23,11 @@ public class SelfReportActivity extends AppCompatActivity {
 		binding = ActivitySelfReportBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		initFragment();
+		initButtons();
+	}
+
+	private void initButtons() {
+//		binding.
 	}
 
 	private void initFragment() {

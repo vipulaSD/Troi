@@ -51,4 +51,7 @@
     <string name="confirm">Confirm</string>
     <string name="arousal">Arousal</string>
     <string name="valence">Valence</string>
+    <string name="agreement_title">The system think your emotional state is,</string>
+    <string name="agreeable_question">How Agree you are with the system prediction?</string>
+    <string name="confidence_question">How confident are you on your judgment?</string>
 </resources>
