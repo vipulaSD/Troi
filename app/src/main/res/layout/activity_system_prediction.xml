@@ -31,6 +31,7 @@
         android:layout_weight="1"
         android:padding="8dp"
         android:text="@string/agreeable_question"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/seek_agreeable" />
 
     <com.google.android.material.slider.Slider
@@ -44,8 +45,7 @@
         android:value="50.0"
         android:valueFrom="0.0"
         android:valueTo="100.0"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView6"
@@ -54,6 +54,7 @@
         android:layout_weight="1"
         android:padding="8dp"
         android:text="@string/confidence_question"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/seek_confidence"
         tools:layout_editor_absoluteX="-29dp" />
 
@@ -69,10 +70,22 @@
 
         android:valueFrom="0.0"
         android:valueTo="100.0"
-        app:layout_constraintBottom_toTopOf="@+id/button" />
+        app:layout_constraintBottom_toTopOf="@+id/system_predict_comment" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/system_predict_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginTop="20dp"
+
+        android:hint="@string/any_comment_optional"
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit_feedback">
+
+    </com.google.android.material.textfield.TextInputEditText>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_submit_feedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_report"

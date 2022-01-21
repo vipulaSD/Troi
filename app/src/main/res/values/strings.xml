@@ -55,4 +55,5 @@
     <string name="agreeable_question">How Agree you are with the system prediction?</string>
     <string name="confidence_question">How confident are you on your judgment?</string>
     <string name="enter_how_you_feel_optional">Enter how you feel (optional)</string>
+    <string name="any_comment_optional">Any Comment (Optional)</string>
 </resources>
