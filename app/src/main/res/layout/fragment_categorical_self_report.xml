@@ -12,7 +12,7 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textAlignment="center"
@@ -26,67 +26,91 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_happy"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_happy"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_sad"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_sad"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_angry"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_angry"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_nervous"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_nervous"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_cheerful"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_cheerful"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_neutral"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_neutral"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_non"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checkable="true"
                 android:text="@string/emo_non"
+                android:textSize="20sp"
                 tools:layout_editor_absoluteX="204dp"
                 tools:layout_editor_absoluteY="550dp" />
         </com.google.android.material.chip.ChipGroup>
+
+        <EditText
+            android:id="@+id/txt_self_emotion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="40dp"
+            android:hint="@string/enter_how_you_feel_optional"
+            app:layout_constraintTop_toBottomOf="@+id/chip_group" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

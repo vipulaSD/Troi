@@ -1,5 +1,6 @@
 package org.ahlab.troi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,7 +14,7 @@ import org.ahlab.troi.databinding.ActivitySelfReportBinding;
 import java.util.Random;
 
 public class SelfReportActivity extends AppCompatActivity {
-	private String TAG = "%%%%%%%%";
+	private String TAG = "#####SELF_REPORT#####";
 	private ActivitySelfReportBinding binding;
 
 	@Override
@@ -27,7 +28,10 @@ public class SelfReportActivity extends AppCompatActivity {
 	}
 
 	private void initButtons() {
-//		binding.
+		binding.btnSubmitReport.setOnClickListener(view -> {
+			Intent intent = new Intent(this, SystemPredictionActivity.class);
+			startActivity(intent);
+		});
 	}
 
 	private void initFragment() {

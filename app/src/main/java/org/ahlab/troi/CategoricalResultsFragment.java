@@ -4,32 +4,27 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.ahlab.troi.databinding.FragmentCategoricalSelfReportBinding;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CategoricalSelfReportFragment#newInstance} factory method to
+ * Use the {@link CategoricalResultsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoricalSelfReportFragment extends Fragment {
+public class CategoricalResultsFragment extends Fragment {
 
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
-	private static final String TAG = "###CAT_SELF_REPOT###";
-	private FragmentCategoricalSelfReportBinding binding;
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
 	private String mParam2;
 
-	public CategoricalSelfReportFragment() {
+	public CategoricalResultsFragment() {
 		// Required empty public constructor
 	}
 
@@ -39,11 +34,11 @@ public class CategoricalSelfReportFragment extends Fragment {
 	 *
 	 * @param param1 Parameter 1.
 	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment CategoricalSelfReportFragment.
+	 * @return A new instance of fragment CategoricalResultsFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static CategoricalSelfReportFragment newInstance(String param1, String param2) {
-		CategoricalSelfReportFragment fragment = new CategoricalSelfReportFragment();
+	public static CategoricalResultsFragment newInstance(String param1, String param2) {
+		CategoricalResultsFragment fragment = new CategoricalResultsFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		args.putString(ARG_PARAM2, param2);
@@ -63,18 +58,7 @@ public class CategoricalSelfReportFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		binding = FragmentCategoricalSelfReportBinding.inflate(inflater,container,false);
-		binding.txtSelfEmotion.setVisibility(View.INVISIBLE);
-		binding.chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
-			Log.i(TAG, "onCreateView: check changed: "+checkedId);
-			if(checkedId==binding.chipNon.getId()){
-				binding.txtSelfEmotion.clearComposingText();
-				binding.txtSelfEmotion.setVisibility(View.VISIBLE);
-			}else{
-				binding.txtSelfEmotion.setVisibility(View.INVISIBLE);
-			}
-		});
-
-		return binding.getRoot();
+		// Inflate the layout for this fragment
+		return inflater.inflate(R.layout.fragment_categorical_results, container, false);
 	}
 }
