@@ -64,4 +64,9 @@
     <string name="key_predicted_category">KEY_PREDICTED_CATEGORY</string>
     <string name="key_pred_arousal">KEY_PREDICTED_AROUSAL</string>
     <string name="key_pred_valence">KEY_PREDICTED_VALENCE</string>
+    <string name="key_pred_mode">KEY_PRED_MODE</string>
+    <string name="key_trigger_mode">KEY_TRIGGER_MODE</string>
+    <string name="key_agree">KEY_AGREE</string>
+    <string name="key_confidence">KEY_CONFIDENCE</string>
+    <string name="key_comment">KEY_COMMENT</string>
 </resources>

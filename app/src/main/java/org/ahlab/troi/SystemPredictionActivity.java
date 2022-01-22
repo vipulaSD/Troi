@@ -1,5 +1,8 @@
 package org.ahlab.troi;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,11 +13,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.ahlab.troi.databinding.ActivitySystemPredictionBinding;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class SystemPredictionActivity extends AppCompatActivity {
+	FirebaseFirestore db = FirebaseFirestore.getInstance();
 	private ActivitySystemPredictionBinding binding;
 	private String TAG = "#####SYSTEM_REPORT#####";
 	private int selfReportMode;
@@ -25,17 +34,22 @@ public class SystemPredictionActivity extends AppCompatActivity {
 	private int predArousal;
 	private int predValence;
 	private int predCategorical;
-
 	private int systemMode;
 	private int degreeOfAgree;
 	private int confidence;
 	private String comment = "";
+	private String pid;
+	private int triggerMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
+		pid = preferences.getString(getString(R.string.key_pid), "");
+
 		processExtra();
 		initFragment();
 		initButton();
@@ -64,7 +78,38 @@ public class SystemPredictionActivity extends AppCompatActivity {
 			degreeOfAgree = (int) binding.seekAgreeable.getValue();
 			confidence = (int) binding.seekConfidence.getValue();
 
-			Log.i(TAG, "agree: " + degreeOfAgree + ", confidence: " + confidence + ", comment: " + comment);
+			Log.i(TAG, "pid : " + pid + ", agree: " + degreeOfAgree + ", confidence: " + confidence + ", comment: " + comment);
+			Map<String, Object> entry = new HashMap<>();
+			entry.put(getString(R.string.key_self_report_mode), selfReportMode);
+			if (selfReportMode == 0) {
+				entry.put(getString(R.string.key_self_category), selfCategorical);
+				entry.put(getString(R.string.key_self_category_custom), customCategory);
+			} else {
+				entry.put(getString(R.string.key_self_arousal), selfArousal);
+				entry.put(getString(R.string.key_self_valence), selfValence);
+			}
+			entry.put(getString(R.string.key_pred_mode), systemMode);
+			if (systemMode == 0) {
+				entry.put(getString(R.string.key_predicted_category), predCategorical);
+			} else {
+				entry.put(getString(R.string.key_pred_arousal), predArousal);
+				entry.put(getString(R.string.key_pred_valence), predValence);
+			}
+			entry.put(getString(R.string.key_trigger_mode), triggerMode);
+			entry.put(getString(R.string.key_agree), degreeOfAgree);
+			entry.put(getString(R.string.key_confidence), confidence);
+			entry.put(getString(R.string.key_comment), comment);
+			entry.put("key_ts", new Date());
+
+			db.collection(pid).add(entry).addOnSuccessListener(documentReference -> {
+				Log.i(TAG, "document added with id: " + documentReference.getId());
+				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}).addOnFailureListener(e -> {
+				Log.e(TAG, "Error while saving the entry", e);
+			});
+
 		});
 
 	}
@@ -80,6 +125,7 @@ public class SystemPredictionActivity extends AppCompatActivity {
 		predArousal = extras.getInt(getString(R.string.key_pred_arousal));
 		predValence = extras.getInt(getString(R.string.key_pred_valence));
 		predCategorical = extras.getInt(getString(R.string.key_predicted_category));
+		triggerMode = extras.getInt(getString(R.string.key_trigger_mode));
 
 		StringBuilder extraBuilder = new StringBuilder("Extras: ");
 		extraBuilder.append("\nself report mode: ").append(selfReportMode);
