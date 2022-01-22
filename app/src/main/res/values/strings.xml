@@ -51,14 +51,17 @@
     <string name="confirm">Confirm</string>
     <string name="arousal">Arousal</string>
     <string name="valence">Valence</string>
-    <string name="agreement_title">The system think your emotional state is,</string>
-    <string name="agreeable_question">How Agree you are with the system prediction?</string>
-    <string name="confidence_question">How confident are you on your judgment?</string>
+    <string name="agreement_title">The system thinks your emotional state is:</string>
+    <string name="agreeable_question">To what degree do you agree on this prediction?</string>
+    <string name="confidence_question">How confident were you with your judgment?</string>
     <string name="enter_how_you_feel_optional">Enter how you feel (optional)</string>
-    <string name="any_comment_optional">Any Comment (Optional)</string>
+    <string name="any_comment_optional">Any further comment (Optional)</string>
     <string name="key_self_category">KEY_SELF_CATEGORY</string>
     <string name="key_self_category_custom">KEY_SELF_CATEGORY_CUSTOM</string>
     <string name="key_self_report_mode">SELF_MODE</string>
     <string name="key_self_arousal">SELF_AROUSAL</string>
     <string name="key_self_valence">SELF_VALENCE</string>
+    <string name="key_predicted_category">KEY_PREDICTED_CATEGORY</string>
+    <string name="key_pred_arousal">KEY_PREDICTED_AROUSAL</string>
+    <string name="key_pred_valence">KEY_PREDICTED_VALENCE</string>
 </resources>

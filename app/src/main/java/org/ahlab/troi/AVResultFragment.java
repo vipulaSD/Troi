@@ -1,64 +1,52 @@
 package org.ahlab.troi;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AVResultFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+
+import org.ahlab.troi.databinding.FragmentAVResultBinding;
+
 public class AVResultFragment extends Fragment {
-
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	private String strArousal;
+	private String strValence;
+	private FragmentAVResultBinding binding;
 
 	public AVResultFragment() {
 		// Required empty public constructor
-	}
-
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment AVResultFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
-	public static AVResultFragment newInstance(String param1, String param2) {
-		AVResultFragment fragment = new AVResultFragment();
-		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
-		fragment.setArguments(args);
-		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
+			int arousal = getArguments().getInt(getString(R.string.key_pred_arousal));
+			if (arousal > 0) {
+				strArousal = "Arousal Level: High";
+			} else if (arousal < 0) {
+				strArousal = "Arousal Level: Low";
+			} else {
+				strArousal = "Arousal Level: Neutral";
+			}
+			int valence = getArguments().getInt(getString(R.string.key_pred_valence));
+			if (valence > 0) {
+				strValence = "Valence Level: Positive";
+			} else if (valence < 0) {
+				strValence = "Valence Level: Negative";
+			} else {
+				strValence = "Valence Level: Neutral";
+			}
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_a_v_result, container, false);
+		binding = FragmentAVResultBinding.inflate(inflater, container, false);
+		binding.txtArousal.setText(strArousal);
+		binding.txtValence.setText(strValence);
+		return binding.getRoot();
 	}
 }

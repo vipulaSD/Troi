@@ -47,6 +47,9 @@ public class SelfReportActivity extends AppCompatActivity {
 				Log.i(TAG, "on data: arousal: " + arousal + ", valence: " + valence);
 			}
 
+			intent.putExtra(getString(R.string.key_predicted_category), 0); // @TODO replace with model values
+			intent.putExtra(getString(R.string.key_pred_arousal), 1); // @TODO replace with model values
+			intent.putExtra(getString(R.string.key_pred_valence), 1); //@TODO replace with model values
 			startActivity(intent);
 		});
 	}

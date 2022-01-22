@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="@string/agreement_title"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
