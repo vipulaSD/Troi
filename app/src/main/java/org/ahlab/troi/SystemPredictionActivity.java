@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class SystemPredictionActivity extends AppCompatActivity {
-	FirebaseFirestore db = FirebaseFirestore.getInstance();
+	FirebaseFirestore db;
 	private ActivitySystemPredictionBinding binding;
 	private String TAG = "#####SYSTEM_REPORT#####";
 	private int selfReportMode;
@@ -46,6 +46,7 @@ public class SystemPredictionActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+		db = FirebaseFirestore.getInstance();
 
 		SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
 		pid = preferences.getString(getString(R.string.key_pid), "");
@@ -103,12 +104,14 @@ public class SystemPredictionActivity extends AppCompatActivity {
 
 			db.collection(pid).add(entry).addOnSuccessListener(documentReference -> {
 				Log.i(TAG, "document added with id: " + documentReference.getId());
-				Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
+
 			}).addOnFailureListener(e -> {
 				Log.e(TAG, "Error while saving the entry", e);
 			});
+
+			Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
 
 		});
 

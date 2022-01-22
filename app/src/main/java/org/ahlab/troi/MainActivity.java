@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.le.ScanCallback;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -34,6 +33,8 @@ import com.empatica.empalink.config.EmpaStatus;
 import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
 import com.google.common.collect.EvictingQueue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import org.ahlab.troi.databinding.ActivityMainBinding;
 import org.apache.commons.lang3.ArrayUtils;
@@ -91,7 +92,14 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 		initView();
 		initButtons();
 		initMenu();
+		initDb();
 
+	}
+
+	private void initDb() {
+		FirebaseFirestore db = FirebaseFirestore.getInstance();
+		FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).build();
+		db.setFirestoreSettings(settings);
 	}
 
 	private void initMenu() {
