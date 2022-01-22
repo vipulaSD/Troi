@@ -1,12 +1,13 @@
 package org.ahlab.troi;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+
+import org.ahlab.troi.databinding.FragmentNPSelfReportBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,10 +20,24 @@ public class NPSelfReportFragment extends Fragment {
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
+	private static final String TAG = "###SELF_AV##";
 
 	// TODO: Rename and change types of parameters
 	private String mParam1;
 	private String mParam2;
+
+	public int getArousal() {
+		return arousal;
+	}
+
+	public int getValence() {
+		return valence;
+	}
+
+	private int arousal;
+	private int valence;
+
+	private FragmentNPSelfReportBinding binding;
 
 	public NPSelfReportFragment() {
 		// Required empty public constructor
@@ -58,7 +73,36 @@ public class NPSelfReportFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_n_p_self_report, container, false);
+		binding = FragmentNPSelfReportBinding.inflate(inflater, container, false);
+
+		binding.rgArousal.setOnCheckedChangeListener((radioGroup, i) -> {
+			if (i == binding.rArousal0.getId()) {
+				arousal = -2;
+			} else if (i == binding.rArousal1.getId()) {
+				arousal = -1;
+			} else if (i == binding.rArousal2.getId()) {
+				arousal = 0;
+			} else if (i == binding.rArousal3.getId()) {
+				arousal = 1;
+			} else if (i == binding.rArousal4.getId()) {
+				arousal = 2;
+			}
+		});
+
+		binding.rgValence.setOnCheckedChangeListener((radioGroup, i) -> {
+			if (i == binding.rValence0.getId()) {
+				valence = -2;
+			} else if (i == binding.rValence1.getId()) {
+				valence = -1;
+			} else if (i == binding.rValence2.getId()) {
+				valence = 0;
+			} else if (i == binding.rValence3.getId()) {
+				valence = 1;
+			} else if (i == binding.rValence4.getId()) {
+				valence = 2;
+			}
+		});
+
+		return binding.getRoot();
 	}
 }

@@ -56,4 +56,9 @@
     <string name="confidence_question">How confident are you on your judgment?</string>
     <string name="enter_how_you_feel_optional">Enter how you feel (optional)</string>
     <string name="any_comment_optional">Any Comment (Optional)</string>
+    <string name="key_self_category">KEY_SELF_CATEGORY</string>
+    <string name="key_self_category_custom">KEY_SELF_CATEGORY_CUSTOM</string>
+    <string name="key_self_report_mode">SELF_MODE</string>
+    <string name="key_self_arousal">SELF_AROUSAL</string>
+    <string name="key_self_valence">SELF_VALENCE</string>
 </resources>
