@@ -89,10 +89,11 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 		long diff = System.currentTimeMillis() - empaticaListener.getLastUpdateTs();
 		double difInMins = diff / (1000 * 60.0);
 		if (difInMins < 1) {
-			binding.tvStatus.setText(R.string.e4_connected);
-			runOnUiThread(() -> {
 
+			runOnUiThread(() -> {
+				binding.tvStatus.setText(R.string.e4_connected);
 				binding.btnConnect.setVisibility(View.INVISIBLE);
+				binding.btnReport.setVisibility(View.VISIBLE);
 			});
 		}
 	}
@@ -258,6 +259,8 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 
 	private void initView() {
 		binding.tvStatus.setText(R.string.status_e4_not_connected);
+		binding.btnPrediction.setVisibility(View.INVISIBLE);
+		binding.btnReport.setVisibility(View.INVISIBLE);
 	}
 
 	private void initModel() {
