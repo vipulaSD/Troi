@@ -6,10 +6,17 @@
     android:orientation="vertical"
     tools:context=".NPSelfReportFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/arousal"
+        android:textAlignment="center" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,10 +60,15 @@
             android:textSize="48sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/valence"
+        android:textAlignment="center" />
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+
         android:orientation="horizontal">
 
         <TextView
