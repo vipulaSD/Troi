@@ -32,20 +32,47 @@
         android:padding="8dp"
         android:text="@string/agreeable_question"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/seek_agreeable" />
+        app:layout_constraintBottom_toTopOf="@+id/linear2" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/seek_agreeable"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:stepSize="1.0"
-        android:value="50.0"
-        android:valueFrom="0.0"
-        android:valueTo="100.0"
-        app:layout_constraintBottom_toTopOf="@+id/textView6" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/textView6">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0"
+            android:text="Totally\nDisagree"
+            android:textAlignment="center"
+            android:textStyle="italic" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/seek_agreeable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:stepSize="1"
+            android:value="5"
+            android:valueFrom="0"
+            android:valueTo="10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="0"
+            android:text="Totally\nAgree"
+            android:textAlignment="center"
+            android:textStyle="italic" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <TextView
         android:id="@+id/textView6"
@@ -55,22 +82,49 @@
         android:padding="8dp"
         android:text="@string/confidence_question"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/seek_confidence"
-        tools:layout_editor_absoluteX="-29dp" />
+        app:layout_constraintBottom_toTopOf="@+id/linear1" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/seek_confidence"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:stepSize="1.0"
-        android:value="50.0"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/system_predict_comment">
 
-        android:valueFrom="0.0"
-        android:valueTo="100.0"
-        app:layout_constraintBottom_toTopOf="@+id/system_predict_comment" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_weight="0"
+            android:text="Unconfident"
+            android:textAlignment="center"
+            android:textStyle="italic" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/seek_confidence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:stepSize="1"
+            android:value="5"
+
+            android:valueFrom="0"
+            android:valueTo="10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="0"
+            android:text="Very\nConfident"
+            android:textAlignment="center"
+            android:textStyle="italic" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/system_predict_comment"

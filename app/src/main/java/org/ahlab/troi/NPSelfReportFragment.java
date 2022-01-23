@@ -78,12 +78,12 @@ public class NPSelfReportFragment extends Fragment {
 		binding.rgArousal.setOnCheckedChangeListener((radioGroup, i) -> {
 			if (i == binding.rArousal0.getId()) {
 				arousal = -2;
-			} else if (i == binding.rArousal1.getId()) {
-				arousal = -1;
+//			} else if (i == binding.rArousal1.getId()) {
+//				arousal = -1;
 			} else if (i == binding.rArousal2.getId()) {
 				arousal = 0;
-			} else if (i == binding.rArousal3.getId()) {
-				arousal = 1;
+//			} else if (i == binding.rArousal3.getId()) {
+//				arousal = 1;
 			} else if (i == binding.rArousal4.getId()) {
 				arousal = 2;
 			}
@@ -92,12 +92,12 @@ public class NPSelfReportFragment extends Fragment {
 		binding.rgValence.setOnCheckedChangeListener((radioGroup, i) -> {
 			if (i == binding.rValence0.getId()) {
 				valence = -2;
-			} else if (i == binding.rValence1.getId()) {
-				valence = -1;
+//			} else if (i == binding.rValence1.getId()) {
+//				valence = -1;
 			} else if (i == binding.rValence2.getId()) {
 				valence = 0;
-			} else if (i == binding.rValence3.getId()) {
-				valence = 1;
+//			} else if (i == binding.rValence3.getId()) {
+//				valence = 1;
 			} else if (i == binding.rValence4.getId()) {
 				valence = 2;
 			}

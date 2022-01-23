@@ -53,15 +53,15 @@
                     app:layout_constraintEnd_toStartOf="@+id/r_arousal_1"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/r_arousal_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_arousal_1"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_2" />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/r_arousal_1"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableTop="@drawable/ic_arousal_1"-->
+<!--                    android:padding="4dp"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_2" />-->
 
                 <RadioButton
                     android:id="@+id/r_arousal_2"
@@ -75,15 +75,15 @@
                     app:layout_constraintEnd_toStartOf="@+id/r_arousal_3" />
 
 
-                <RadioButton
-                    android:id="@+id/r_arousal_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_arousal_3"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_4" />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/r_arousal_3"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableTop="@drawable/ic_arousal_3"-->
+<!--                    android:padding="4dp"-->
+<!--                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_4" />-->
 
                 <RadioButton
                     android:id="@+id/r_arousal_4"
@@ -103,7 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/textView3"
@@ -130,14 +131,14 @@
                     android:drawableTop="@drawable/ic_valence_0"
                     android:padding="4dp" />
 
-                <RadioButton
-                    android:id="@+id/r_valence_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_valence_1"
-                    android:padding="4dp" />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/r_valence_1"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableTop="@drawable/ic_valence_1"-->
+<!--                    android:padding="4dp" />-->
 
                 <RadioButton
                     android:id="@+id/r_valence_2"
@@ -149,14 +150,14 @@
                     android:drawableTop="@drawable/ic_valence_2"
                     android:padding="4dp" />
 
-                <RadioButton
-                    android:id="@+id/r_valence_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_valence_3"
-                    android:padding="4dp" />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/r_valence_3"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableTop="@drawable/ic_valence_3"-->
+<!--                    android:padding="4dp" />-->
 
                 <RadioButton
                     android:id="@+id/r_valence_4"

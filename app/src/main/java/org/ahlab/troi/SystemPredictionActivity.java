@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import org.ahlab.troi.databinding.ActivitySystemPredictionBinding;
 
@@ -47,6 +48,8 @@ public class SystemPredictionActivity extends AppCompatActivity {
 		binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		db = FirebaseFirestore.getInstance();
+		FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).build();
+		db.setFirestoreSettings(settings);
 
 		SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
 		pid = preferences.getString(getString(R.string.key_pid), "");

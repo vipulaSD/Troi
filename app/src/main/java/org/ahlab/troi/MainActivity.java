@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -30,15 +32,11 @@ import com.empatica.empalink.EmpaDeviceManager;
 import com.empatica.empalink.EmpaticaDevice;
 import com.empatica.empalink.config.EmpaSensorType;
 import com.empatica.empalink.config.EmpaStatus;
-import com.empatica.empalink.delegate.EmpaDataDelegate;
 import com.empatica.empalink.delegate.EmpaStatusDelegate;
-import com.google.common.collect.EvictingQueue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import org.ahlab.troi.databinding.ActivityMainBinding;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.stat.StatUtils;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.InterpreterApi;
 import org.tensorflow.lite.InterpreterFactory;
@@ -48,14 +46,11 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("UnstableApiUsage")
-public class MainActivity extends AppCompatActivity implements EmpaDataDelegate, EmpaStatusDelegate {
+public class MainActivity extends AppCompatActivity implements EmpaStatusDelegate {
 
 	private static final int REQUEST_PERMISSION_ACCESS_COARSE_LOCATION = 1;
 	private static final String TAG = "###########";
@@ -64,14 +59,9 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 	private EmpaDeviceManager deviceManager;
 	private ActivityMainBinding binding;
 
-	private EvictingQueue<Double> bvpQueue;
-	private EvictingQueue<Double> edaQueue;
-	private EvictingQueue<Double> tempQueue;
-	private EvictingQueue<Double> accelXQueue;
-	private EvictingQueue<Double> accelYQueue;
-	private EvictingQueue<Double> accelZQueue;
-
 	private ActionBarDrawerToggle actionBarDrawerToggle;
+
+	private EmpaticaListener empaticaListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +76,13 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-
+		empaticaListener = EmpaticaListener.getInstance();
 		initModel();
-		initQueues();
 		initView();
 		initButtons();
 		initMenu();
 		initDb();
+		initService();
 
 	}
 
@@ -146,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
 		//prediction button
 		binding.btnPrediction.setOnClickListener(view -> {
-			if ((accelXQueue.remainingCapacity() + edaQueue.remainingCapacity() + bvpQueue.remainingCapacity() + tempQueue.remainingCapacity()) == 0) {
+			if (empaticaListener.isDataReady()) {
 				makePrediction();
 			} else {
 				Log.i(TAG, "waiting for data");
@@ -167,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 			Log.d(TAG, "initEmpaticaDeviceManager: request permission");
 		} else {
 			Log.d(TAG, "initEmpaticaDeviceManager: connection request");
-			deviceManager = new EmpaDeviceManager(getApplicationContext(), this, this);
+			deviceManager = new EmpaDeviceManager(getApplicationContext(), empaticaListener, this);
 			deviceManager.authenticateWithAPIKey(getResources().getString(R.string.empatica_api_key));
 
 		}
@@ -191,13 +181,13 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 			float[] tmp;
 
 			if (i == 0) {
-				tmp = getEDASnapshot();
+				tmp = empaticaListener.getEDASnapshot();
 			} else if (i == 1) {
-				tmp = getBVPSnapshot();
+				tmp = empaticaListener.getBVPSnapshot();
 			} else if (i == 2) {
-				tmp = getAccSnapshot();
+				tmp = empaticaListener.getAccSnapshot();
 			} else {
-				tmp = getTempSnapshot();
+				tmp = empaticaListener.getTempSnapshot();
 			}
 
 			Log.i(TAG, "makePrediction: data: " + Arrays.toString(tmp));
@@ -247,71 +237,12 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 
 	}
 
-	private float[] getAccSnapshot() {
-
-		List<Double> acc = new ArrayList<>(accelXQueue);
-		acc.addAll(accelYQueue);
-		acc.addAll(accelZQueue);
-
-		float[] ret = new float[384];
-
-		double[] accArray = ArrayUtils.toPrimitive(acc.toArray(new Double[0]), 0.0);
-		accArray = StatUtils.normalize(accArray);
-
-		for (int i = 0; i < 384; i++) {
-			ret[i] = (float) accArray[i];
-		}
-		return ret;
-
-	}
-
-	private float[] getEDASnapshot() {
-		float[] ret = new float[16];
-		List<Double> eda = new ArrayList<>(edaQueue);
-		double[] edaD = ArrayUtils.toPrimitive(eda.toArray(new Double[0]), 0.0);
-		edaD = StatUtils.normalize(edaD);
-		for (int i = 0; i < 16; i++) {
-			ret[i] = (float) edaD[i];
-		}
-		return ret;
-	}
-
-	private float[] getBVPSnapshot() {
-		float[] ret = new float[256];
-		List<Double> bvp = new ArrayList<>(bvpQueue);
-		double[] bvpD = ArrayUtils.toPrimitive(bvp.toArray(new Double[0]), 0.0);
-		bvpD = StatUtils.normalize(bvpD);
-		for (int i = 0; i < 256; i++) {
-			ret[i] = (float) bvpD[i];
-		}
-		return ret;
-	}
-
-	private float[] getTempSnapshot() {
-		float[] ret = new float[16];
-		double[] tmpD = ArrayUtils.toPrimitive(tempQueue.toArray(new Double[0]), 0.0);
-		tmpD = StatUtils.normalize(tmpD);
-		for (int i = 0; i < 16; i++) {
-			ret[i] = (float) tmpD[i];
-		}
-		return ret;
-	}
-
 	private void initView() {
 		binding.tvStatus.setText(R.string.status_e4_not_connected);
 	}
 
-	private void initQueues() {
-		edaQueue = EvictingQueue.create(16);
-		tempQueue = EvictingQueue.create(16);
-		bvpQueue = EvictingQueue.create(256);
-		accelXQueue = EvictingQueue.create(128);
-		accelYQueue = EvictingQueue.create(128);
-		accelZQueue = EvictingQueue.create(128);
-	}
-
 	private void initModel() {
-		MappedByteBuffer tfliteModel = null;
+		MappedByteBuffer tfliteModel;
 		try {
 			tfliteModel = FileUtil.loadMappedFile(getApplicationContext(), "model.tflite");
 			tflite = new InterpreterFactory().create(tfliteModel, new InterpreterApi.Options());
@@ -332,9 +263,14 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-//		if (deviceManager != null) {
-//			deviceManager.cleanUp();
-//		}
+
+	}
+
+	@RequiresApi(api = Build.VERSION_CODES.O)
+	private void initService() {
+		Intent intent = new Intent(this, TroiService.class);
+		startForegroundService(intent);
+
 	}
 
 	@Override
@@ -385,46 +321,6 @@ public class MainActivity extends AppCompatActivity implements EmpaDataDelegate,
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void didReceiveGSR(float gsr, double timestamp) {
-		Log.i(TAG, "didReceiveGSR: " + gsr);
-		edaQueue.add((double) gsr);
-	}
-
-	@Override
-	public void didReceiveBVP(float bvp, double timestamp) {
-		Log.i(TAG, "didReceiveBVP: " + bvp);
-		bvpQueue.add((double) bvp);
-	}
-
-	@Override
-	public void didReceiveIBI(float ibi, double timestamp) {
-	}
-
-	@Override
-	public void didReceiveTemperature(float t, double timestamp) {
-		Log.i(TAG, "didReceiveTemperature: " + t);
-		tempQueue.add((double) t);
-	}
-
-	@Override
-	public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
-		Log.i(TAG, "didReceiveAcceleration: " + x + ", " + y + ", " + z);
-		accelXQueue.add((double) x);
-		accelYQueue.add((double) y);
-		accelZQueue.add((double) z);
-	}
-
-	@Override
-	public void didReceiveBatteryLevel(float level, double timestamp) {
-		Log.i(TAG, "didReceiveBatteryLevel: " + level + "% at " + timestamp);
-	}
-
-	@Override
-	public void didReceiveTag(double timestamp) {
-		Toast.makeText(MainActivity.this, "Received a Tag on " + timestamp, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
