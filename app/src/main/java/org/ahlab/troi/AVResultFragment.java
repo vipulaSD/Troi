@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.ahlab.troi.databinding.FragmentAVResultBinding;
@@ -30,19 +29,19 @@ public class AVResultFragment extends Fragment {
 		if (getArguments() != null) {
 			int arousal = getArguments().getInt(getString(R.string.key_pred_arousal));
 			if (arousal > 0) {
-				binding.imgArousal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_arousal_4));
+				binding.txtArousal.setText(getString(R.string.as_high_arousal));
 			} else if (arousal < 0) {
-				binding.imgArousal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_arousal_0));
+				binding.txtArousal.setText(getString(R.string.as_low_arousal));
 			} else {
-				binding.imgArousal.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_arousal_2));
+				binding.txtArousal.setText(getString(R.string.as_neutral));
 			}
 			int valence = getArguments().getInt(getString(R.string.key_pred_valence));
 			if (valence > 0) {
-				binding.imgValence.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_valence_4));
+				binding.txtValence.setText(getString(R.string.as_positive_valence));
 			} else if (valence < 0) {
-				binding.imgValence.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_valence_0));
+				binding.txtValence.setText(getString(R.string.as_negative_valence));
 			} else {
-				binding.imgValence.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ic_valence_2));
+				binding.txtValence.setText(getString(R.string.as_neutral));
 			}
 		}
 		return binding.getRoot();

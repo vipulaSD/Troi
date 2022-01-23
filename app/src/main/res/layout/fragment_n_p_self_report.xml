@@ -1,180 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".NPSelfReportFragment">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/as_low_arousal"
+            android:textSize="48sp" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="100"
+            android:orientation="vertical">
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slideArousal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:stepSize="0.001"
+                android:value=".5"
+                android:valueFrom="0.0"
+                android:valueTo="1.0" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="-14dp"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/ic_as_scale" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/as_high_arousal"
+            android:textSize="48sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/as_negative_valence"
+            android:textSize="48sp" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="100"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
+            <com.google.android.material.slider.Slider
+                android:id="@+id/slideValence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0"
-                android:text="@string/arousal"
-                android:textSize="20sp" />
+                android:stepSize="0.001"
+                android:value=".5"
+                android:valueFrom="0.0"
+                android:valueTo="1.0" />
 
-            <RadioGroup
-                android:id="@+id/rg_arousal"
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/btn_submit_report"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
-
-                <RadioButton
-                    android:id="@+id/r_arousal_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_arousal_0"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_1"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-<!--                <RadioButton-->
-<!--                    android:id="@+id/r_arousal_1"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:drawableTop="@drawable/ic_arousal_1"-->
-<!--                    android:padding="4dp"-->
-<!--                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_2" />-->
-
-                <RadioButton
-                    android:id="@+id/r_arousal_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:drawableTop="@drawable/ic_arousal_2"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_3" />
-
-
-<!--                <RadioButton-->
-<!--                    android:id="@+id/r_arousal_3"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:drawableTop="@drawable/ic_arousal_3"-->
-<!--                    android:padding="4dp"-->
-<!--                    app:layout_constraintEnd_toStartOf="@+id/r_arousal_4" />-->
-
-                <RadioButton
-                    android:id="@+id/r_arousal_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_arousal_4"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-
-            </RadioGroup>
+                android:layout_height="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="-14dp"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/ic_as_scale" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0"
-                android:text="@string/valence"
-                android:textSize="20sp" />
-
-            <RadioGroup
-                android:id="@+id/rg_valence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/r_valence_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_valence_0"
-                    android:padding="4dp" />
-
-<!--                <RadioButton-->
-<!--                    android:id="@+id/r_valence_1"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:drawableTop="@drawable/ic_valence_1"-->
-<!--                    android:padding="4dp" />-->
-
-                <RadioButton
-                    android:id="@+id/r_valence_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:drawableTop="@drawable/ic_valence_2"
-                    android:padding="4dp" />
-
-<!--                <RadioButton-->
-<!--                    android:id="@+id/r_valence_3"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:drawableTop="@drawable/ic_valence_3"-->
-<!--                    android:padding="4dp" />-->
-
-                <RadioButton
-                    android:id="@+id/r_valence_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_valence_4"
-                    android:padding="4dp" />
-
-
-            </RadioGroup>
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
+            android:text="@string/as_positive_valence"
+            android:textSize="48sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

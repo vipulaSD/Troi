@@ -39,8 +39,8 @@ public class SelfReportActivity extends AppCompatActivity {
 				intent.putExtra(getString(R.string.key_self_category_custom), customEmotionCategory);
 				intent.putExtra(getString(R.string.key_self_report_mode), 0);
 			} else if (selectedMode == 1) {
-				int arousal = ((NPSelfReportFragment) dataFragment).getArousal();
-				int valence = ((NPSelfReportFragment) dataFragment).getValence();
+				double arousal = ((NPSelfReportFragment) dataFragment).getArousal();
+				double valence = ((NPSelfReportFragment) dataFragment).getValence();
 				intent.putExtra(getString(R.string.key_self_arousal), arousal);
 				intent.putExtra(getString(R.string.key_self_valence), valence);
 				intent.putExtra(getString(R.string.key_self_report_mode), 1);

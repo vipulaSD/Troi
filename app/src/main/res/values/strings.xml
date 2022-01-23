@@ -69,4 +69,9 @@
     <string name="key_agree">KEY_AGREE</string>
     <string name="key_confidence">KEY_CONFIDENCE</string>
     <string name="key_comment">KEY_COMMENT</string>
+    <string name="as_low_arousal">😴</string>
+    <string name="as_high_arousal">😳</string>
+    <string name="as_positive_valence">😀</string>
+    <string name="as_negative_valence">😞</string>
+    <string name="as_neutral">😐</string>
 </resources>

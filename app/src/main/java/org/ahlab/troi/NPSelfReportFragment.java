@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.slider.Slider;
 
 import org.ahlab.troi.databinding.FragmentNPSelfReportBinding;
 
@@ -25,18 +28,8 @@ public class NPSelfReportFragment extends Fragment {
 	// TODO: Rename and change types of parameters
 	private String mParam1;
 	private String mParam2;
-
-	public int getArousal() {
-		return arousal;
-	}
-
-	public int getValence() {
-		return valence;
-	}
-
-	private int arousal;
-	private int valence;
-
+	private double arousal;
+	private double valence;
 	private FragmentNPSelfReportBinding binding;
 
 	public NPSelfReportFragment() {
@@ -61,6 +54,14 @@ public class NPSelfReportFragment extends Fragment {
 		return fragment;
 	}
 
+	public double getArousal() {
+		return arousal;
+	}
+
+	public double getValence() {
+		return valence;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,34 +76,57 @@ public class NPSelfReportFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		binding = FragmentNPSelfReportBinding.inflate(inflater, container, false);
 
-		binding.rgArousal.setOnCheckedChangeListener((radioGroup, i) -> {
-			if (i == binding.rArousal0.getId()) {
-				arousal = -2;
-//			} else if (i == binding.rArousal1.getId()) {
-//				arousal = -1;
-			} else if (i == binding.rArousal2.getId()) {
-				arousal = 0;
-//			} else if (i == binding.rArousal3.getId()) {
-//				arousal = 1;
-			} else if (i == binding.rArousal4.getId()) {
-				arousal = 2;
+//		binding.rgArousal.setOnCheckedChangeListener((radioGroup, i) -> {
+//			if (i == binding.rArousal0.getId()) {
+//				arousal = -2;
+////			} else if (i == binding.rArousal1.getId()) {
+////				arousal = -1;
+//			} else if (i == binding.rArousal2.getId()) {
+//				arousal = 0;
+////			} else if (i == binding.rArousal3.getId()) {
+////				arousal = 1;
+//			} else if (i == binding.rArousal4.getId()) {
+//				arousal = 2;
+//			}
+//		});
+//
+//		binding.rgValence.setOnCheckedChangeListener((radioGroup, i) -> {
+//			if (i == binding.rValence0.getId()) {
+//				valence = -2;
+////			} else if (i == binding.rValence1.getId()) {
+////				valence = -1;
+//			} else if (i == binding.rValence2.getId()) {
+//				valence = 0;
+////			} else if (i == binding.rValence3.getId()) {
+////				valence = 1;
+//			} else if (i == binding.rValence4.getId()) {
+//				valence = 2;
+//			}
+//		});
+
+		binding.slideArousal.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+			@Override
+			public void onStartTrackingTouch(@NonNull Slider slider) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(@NonNull Slider slider) {
+				arousal = slider.getValue();
 			}
 		});
 
-		binding.rgValence.setOnCheckedChangeListener((radioGroup, i) -> {
-			if (i == binding.rValence0.getId()) {
-				valence = -2;
-//			} else if (i == binding.rValence1.getId()) {
-//				valence = -1;
-			} else if (i == binding.rValence2.getId()) {
-				valence = 0;
-//			} else if (i == binding.rValence3.getId()) {
-//				valence = 1;
-			} else if (i == binding.rValence4.getId()) {
-				valence = 2;
+		binding.slideValence.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+			@Override
+			public void onStartTrackingTouch(@NonNull Slider slider) {
+
+			}
+
+			@Override
+			public void onStopTrackingTouch(@NonNull Slider slider) {
+				valence = slider.getValue();
 			}
 		});
-
 		return binding.getRoot();
 	}
 }

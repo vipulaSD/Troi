@@ -28,8 +28,8 @@ public class SystemPredictionActivity extends AppCompatActivity {
 	private ActivitySystemPredictionBinding binding;
 	private String TAG = "#####SYSTEM_REPORT#####";
 	private int selfReportMode;
-	private int selfArousal;
-	private int selfValence;
+	private double selfArousal;
+	private double selfValence;
 	private int selfCategorical;
 	private String customCategory;
 	private int predArousal;
@@ -124,8 +124,8 @@ public class SystemPredictionActivity extends AppCompatActivity {
 		Bundle extras = getIntent().getExtras();
 		Log.i(TAG, "processExtra: " + extras);
 		selfReportMode = extras.getInt(getString(R.string.key_self_report_mode));
-		selfArousal = extras.getInt(getString(R.string.key_self_arousal));
-		selfValence = extras.getInt(getString(R.string.key_self_valence));
+		selfArousal = extras.getDouble(getString(R.string.key_self_arousal));
+		selfValence = extras.getDouble(getString(R.string.key_self_valence));
 		selfCategorical = extras.getInt(getString(R.string.key_self_category));
 		customCategory = extras.getString(getString(R.string.key_self_category_custom), "");
 		predArousal = extras.getInt(getString(R.string.key_pred_arousal));
