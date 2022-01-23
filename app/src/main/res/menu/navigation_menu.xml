@@ -2,8 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
+
     <item
         android:id="@+id/nav_pid"
         android:title="Participant ID: " />
+    <item
+        android:id="@+id/dummy1"
+        android:title="" />
+    <item
+        android:id="@+id/dummy2"
+        android:title="" />
+    <item
+        android:id="@+id/dummy3"
+        android:title="" />
+    <item
+        android:id="@+id/dummy4"
+        android:title="" />
+    <item
+        android:id="@+id/end_service"
+        android:title="End Service" />
 
 </menu>

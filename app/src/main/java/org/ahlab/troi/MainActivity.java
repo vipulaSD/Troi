@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -77,13 +75,26 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		empaticaListener = EmpaticaListener.getInstance();
-		initModel();
 		initView();
+		checkE4Connection();
+		initModel();
 		initButtons();
 		initMenu();
 		initDb();
 		initService();
 
+	}
+
+	private void checkE4Connection() {
+		long diff = System.currentTimeMillis() - empaticaListener.getLastUpdateTs();
+		double difInMins = diff / (1000 * 60.0);
+		if (difInMins < 1) {
+			binding.tvStatus.setText(R.string.e4_connected);
+			runOnUiThread(() -> {
+
+				binding.btnConnect.setVisibility(View.INVISIBLE);
+			});
+		}
 	}
 
 	private void initDb() {
@@ -125,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 
 			return false;
 		});
+
+		MenuItem itemEndService = menu.findItem(R.id.end_service);
+		itemEndService.setOnMenuItemClickListener(item -> {
+			Intent intent = new Intent(this, TroiService.class);
+			stopService(intent);
+			return true;
+		});
 	}
 
 	private void initButtons() {
@@ -157,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 			Log.d(TAG, "initEmpaticaDeviceManager: request permission");
 		} else {
 			Log.d(TAG, "initEmpaticaDeviceManager: connection request");
+
 			deviceManager = new EmpaDeviceManager(getApplicationContext(), empaticaListener, this);
 			deviceManager.authenticateWithAPIKey(getResources().getString(R.string.empatica_api_key));
 
@@ -266,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 
 	}
 
-	@RequiresApi(api = Build.VERSION_CODES.O)
 	private void initService() {
+		Log.i(TAG, "initService: starting serice");
 		Intent intent = new Intent(this, TroiService.class);
 		startForegroundService(intent);
 

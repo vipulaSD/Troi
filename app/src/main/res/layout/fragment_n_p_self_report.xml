@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/as_low_arousal"
+            android:textColor="@color/black"
             android:textSize="48sp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -48,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/as_high_arousal"
+            android:textColor="@color/black"
             android:textSize="48sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -62,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/as_negative_valence"
+            android:textColor="@color/black"
             android:textSize="48sp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -93,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/as_positive_valence"
+            android:textColor="@color/black"
             android:textSize="48sp" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

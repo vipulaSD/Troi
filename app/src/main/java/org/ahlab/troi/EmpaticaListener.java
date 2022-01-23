@@ -23,6 +23,8 @@ class EmpaticaListener implements EmpaDataDelegate {
 	private EvictingQueue<Double> accelYQueue;
 	private EvictingQueue<Double> accelZQueue;
 
+	private long lastUpdateTs;
+
 	private EmpaticaListener() {
 		initQueues();
 	}
@@ -41,6 +43,10 @@ class EmpaticaListener implements EmpaDataDelegate {
 			instance = new EmpaticaListener();
 		}
 		return instance;
+	}
+
+	public long getLastUpdateTs() {
+		return lastUpdateTs;
 	}
 
 	public boolean isDataReady() {
@@ -99,13 +105,15 @@ class EmpaticaListener implements EmpaDataDelegate {
 
 	@Override
 	public void didReceiveGSR(float gsr, double timestamp) {
-		Log.i(TAG, "didReceiveGSR: " + gsr);
+//		Log.i(TAG, "didReceiveGSR: " + gsr);
+		lastUpdateTs = System.currentTimeMillis();
 		edaQueue.add((double) gsr);
 	}
 
 	@Override
 	public void didReceiveBVP(float bvp, double timestamp) {
-		Log.i(TAG, "didReceiveBVP: " + bvp);
+//		Log.i(TAG, "didReceiveBVP: " + bvp);
+		lastUpdateTs = System.currentTimeMillis();
 		bvpQueue.add((double) bvp);
 	}
 
@@ -115,13 +123,15 @@ class EmpaticaListener implements EmpaDataDelegate {
 
 	@Override
 	public void didReceiveTemperature(float t, double timestamp) {
-		Log.i(TAG, "didReceiveTemperature: " + t);
+//		Log.i(TAG, "didReceiveTemperature: " + t);
+		lastUpdateTs = System.currentTimeMillis();
 		tempQueue.add((double) t);
 	}
 
 	@Override
 	public void didReceiveAcceleration(int x, int y, int z, double timestamp) {
-		Log.i(TAG, "didReceiveAcceleration: " + x + ", " + y + ", " + z);
+//		Log.i(TAG, "didReceiveAcceleration: " + x + ", " + y + ", " + z);
+		lastUpdateTs = System.currentTimeMillis();
 		accelXQueue.add((double) x);
 		accelYQueue.add((double) y);
 		accelZQueue.add((double) z);

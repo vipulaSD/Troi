@@ -17,15 +17,25 @@ public class SelfReportActivity extends AppCompatActivity {
 	private final String TAG = "#####SELF_REPORT#####";
 	private ActivitySelfReportBinding binding;
 	private int selectedMode = -1;
+	private int triggerMode;
+	private int catPrediction;
+	private int arousalPred;
+	private int valencePred;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		binding = ActivitySelfReportBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		Fragment fragment = initFragment();
 		initButtons(fragment);
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			triggerMode = extras.getInt(getString(R.string.key_trigger_mode), 0);
+			catPrediction = extras.getInt(getString(R.string.key_predicted_category));
+			arousalPred = extras.getInt(getString(R.string.key_pred_arousal));
+			valencePred = extras.getInt(getString(R.string.key_pred_valence));
+		}
 	}
 
 	private void initButtons(Fragment dataFragment) {
@@ -47,9 +57,10 @@ public class SelfReportActivity extends AppCompatActivity {
 				Log.i(TAG, "on data: arousal: " + arousal + ", valence: " + valence);
 			}
 
-			intent.putExtra(getString(R.string.key_predicted_category), 0); // @TODO replace with model values
-			intent.putExtra(getString(R.string.key_pred_arousal), 1); // @TODO replace with model values
-			intent.putExtra(getString(R.string.key_pred_valence), 1); //@TODO replace with model values
+			intent.putExtra(getString(R.string.key_predicted_category), catPrediction);
+			intent.putExtra(getString(R.string.key_pred_arousal), arousalPred);
+			intent.putExtra(getString(R.string.key_pred_valence), valencePred);
+			intent.putExtra(getString(R.string.key_trigger_mode), triggerMode);
 			startActivity(intent);
 		});
 	}
