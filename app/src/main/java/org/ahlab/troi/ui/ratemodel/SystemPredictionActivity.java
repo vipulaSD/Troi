@@ -26,143 +26,163 @@ import java.util.Map;
 import java.util.Random;
 
 public class SystemPredictionActivity extends AppCompatActivity {
-    FirebaseFirestore db;
-    private ActivitySystemPredictionBinding binding;
-    private final String TAG = "#####SYSTEM_REPORT#####";
-    private int selfReportMode;
-    private double selfArousal;
-    private double selfValence;
-    private int selfCategorical;
-    private String customCategory;
-    private int predictedArousal;
-    private int predictedValence;
-    private int predictedCategory;
-    private int systemMode;
-    private int degreeOfAgree;
-    private int confidence;
-    private String comment = "";
-    private String pid;
-    private int triggerMode;
+  private static final String TAG = "#####SYSTEM_REPORT#####";
+  private FirebaseFirestore db;
+  private ActivitySystemPredictionBinding binding;
+  private int selfReportMode;
+  private double selfArousal;
+  private double selfValence;
+  private int selfCategorical;
+  private String customCategory;
+  private int predictedArousal;
+  private int predictedValence;
+  private int predictedCategory;
+  private int systemMode;
+  private int degreeOfAgree;
+  private int confidence;
+  private String comment = "";
+  private String pid;
+  private int triggerMode;
+  private Random random;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        db = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).build();
-        db.setFirestoreSettings(settings);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
+    db = FirebaseFirestore.getInstance();
+    FirebaseFirestoreSettings settings =
+        new FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build();
+    db.setFirestoreSettings(settings);
 
-        SharedPreferences preferences = getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
-        pid = preferences.getString(getString(R.string.key_pid), "");
+    SharedPreferences preferences =
+        getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
+    pid = preferences.getString(getString(R.string.key_pid), "");
 
-        processExtra();
-        initFragment();
-        initButton();
+    random = new Random();
+    processExtra();
+    initFragment();
+    initButton();
+  }
 
-    }
+  private void initButton() {
+    binding.systemPredictComment.addTextChangedListener(
+        new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            /*
+            no action require before text change
+             */
+          }
 
-    private void initButton() {
-        binding.systemPredictComment.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+          @Override
+          public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            /*
+            no additional action require during text change
+             */
+          }
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                comment = editable.toString();
-
-            }
+          @Override
+          public void afterTextChanged(Editable editable) {
+            comment = editable.toString();
+          }
         });
-        binding.btnSubmitFeedback.setOnClickListener(view -> {
-            degreeOfAgree = (int) binding.seekAgreeable.getValue();
-            confidence = (int) binding.seekConfidence.getValue();
+    binding.btnSubmitFeedback.setOnClickListener(
+        view -> {
+          degreeOfAgree = (int) binding.seekAgreeable.getValue();
+          confidence = (int) binding.seekConfidence.getValue();
 
-            Log.i(TAG, "pid : " + pid + ", agree: " + degreeOfAgree + ", confidence: " + confidence + ", comment: " + comment);
-            Map<String, Object> entry = new HashMap<>();
-            entry.put(getString(R.string.key_self_report_mode), selfReportMode);
-            if (selfReportMode == 0) {
-                entry.put(getString(R.string.key_self_category), selfCategorical);
-                entry.put(getString(R.string.key_self_category_custom), customCategory);
-            } else {
-                entry.put(getString(R.string.key_self_arousal), selfArousal);
-                entry.put(getString(R.string.key_self_valence), selfValence);
-            }
-            entry.put(getString(R.string.key_pred_mode), systemMode);
-            if (systemMode == 0) {
-                entry.put(getString(R.string.key_predicted_category), predictedCategory);
-            } else {
-                entry.put(getString(R.string.key_pred_arousal), predictedArousal);
-                entry.put(getString(R.string.key_pred_valence), predictedValence);
-            }
-            entry.put(getString(R.string.key_trigger_mode), triggerMode);
-            entry.put(getString(R.string.key_agree), degreeOfAgree);
-            entry.put(getString(R.string.key_confidence), confidence);
-            entry.put(getString(R.string.key_comment), comment);
-            entry.put("key_ts", new Date());
+          Log.i(
+              TAG,
+              "pid : "
+                  + pid
+                  + ", agree: "
+                  + degreeOfAgree
+                  + ", confidence: "
+                  + confidence
+                  + ", comment: "
+                  + comment);
+          Map<String, Object> entry = new HashMap<>();
+          entry.put(getString(R.string.key_self_report_mode), selfReportMode);
+          if (selfReportMode == 0) {
+            entry.put(getString(R.string.key_self_category), selfCategorical);
+            entry.put(getString(R.string.key_self_category_custom), customCategory);
+          } else {
+            entry.put(getString(R.string.key_self_arousal), selfArousal);
+            entry.put(getString(R.string.key_self_valence), selfValence);
+          }
+          entry.put(getString(R.string.key_pred_mode), systemMode);
+          if (systemMode == 0) {
+            entry.put(getString(R.string.key_predicted_category), predictedCategory);
+          } else {
+            entry.put(getString(R.string.key_pred_arousal), predictedArousal);
+            entry.put(getString(R.string.key_pred_valence), predictedValence);
+          }
+          entry.put(getString(R.string.key_trigger_mode), triggerMode);
+          entry.put(getString(R.string.key_agree), degreeOfAgree);
+          entry.put(getString(R.string.key_confidence), confidence);
+          entry.put(getString(R.string.key_comment), comment);
+          entry.put("key_ts", new Date());
 
-            db.collection(pid).add(entry)
-                    .addOnSuccessListener(documentReference -> Log.i(TAG, "document added with id: " + documentReference.getId()))
-                    .addOnFailureListener(e -> Log.e(TAG, "Error while saving the entry", e));
+          db.collection(pid)
+              .add(entry)
+              .addOnSuccessListener(
+                  documentReference ->
+                      Log.i(TAG, "document added with id: " + documentReference.getId()))
+              .addOnFailureListener(e -> Log.e(TAG, "Error while saving the entry", e));
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-
+          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          startActivity(intent);
         });
+  }
 
+  private void processExtra() {
+    Bundle extras = getIntent().getExtras();
+    Log.i(TAG, "processExtra: " + extras);
+    selfReportMode = extras.getInt(getString(R.string.key_self_report_mode));
+    selfArousal = extras.getDouble(getString(R.string.key_self_arousal));
+    selfValence = extras.getDouble(getString(R.string.key_self_valence));
+    selfCategorical = extras.getInt(getString(R.string.key_self_category));
+    customCategory = extras.getString(getString(R.string.key_self_category_custom), "");
+    predictedArousal = extras.getInt(getString(R.string.key_pred_arousal));
+    predictedValence = extras.getInt(getString(R.string.key_pred_valence));
+    predictedCategory = extras.getInt(getString(R.string.key_predicted_category));
+    triggerMode = extras.getInt(getString(R.string.key_trigger_mode));
+
+    StringBuilder extraBuilder = new StringBuilder("Extras: ");
+    extraBuilder.append("\nself report mode: ").append(selfReportMode);
+    extraBuilder.append("\n self report arousal: ").append(selfArousal);
+    extraBuilder.append("\n self report valence: ").append(selfValence);
+    extraBuilder.append("\n self report categorical: ").append(selfCategorical);
+    extraBuilder.append("\n self report custom: ").append(customCategory);
+    extraBuilder.append("\n predicted arousal: ").append(predictedArousal);
+    extraBuilder.append("\n predicated valence: ").append(predictedValence);
+    extraBuilder.append("\n predicated category: ").append(predictedCategory);
+
+    Log.i(TAG, "processExtra: " + extraBuilder);
+  }
+
+  private void initFragment() {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    Fragment fragment;
+    float rnd = random.nextFloat();
+    Log.i(TAG, "onCreate: randomVal: " + rnd);
+    if (rnd > 0.5) {
+      fragment = new CategoricalResultsFragment();
+      fragment.setArguments(getIntent().getExtras());
+      systemMode = 0;
+    } else {
+      fragment = new DimensionalResultsFragment();
+      fragment.setArguments(getIntent().getExtras());
+      systemMode = 1;
     }
 
-    private void processExtra() {
-        Bundle extras = getIntent().getExtras();
-        Log.i(TAG, "processExtra: " + extras);
-        selfReportMode = extras.getInt(getString(R.string.key_self_report_mode));
-        selfArousal = extras.getDouble(getString(R.string.key_self_arousal));
-        selfValence = extras.getDouble(getString(R.string.key_self_valence));
-        selfCategorical = extras.getInt(getString(R.string.key_self_category));
-        customCategory = extras.getString(getString(R.string.key_self_category_custom), "");
-        predictedArousal = extras.getInt(getString(R.string.key_pred_arousal));
-        predictedValence = extras.getInt(getString(R.string.key_pred_valence));
-        predictedCategory = extras.getInt(getString(R.string.key_predicted_category));
-        triggerMode = extras.getInt(getString(R.string.key_trigger_mode));
-
-        StringBuilder extraBuilder = new StringBuilder("Extras: ");
-        extraBuilder.append("\nself report mode: ").append(selfReportMode);
-        extraBuilder.append("\n self report arousal: ").append(selfArousal);
-        extraBuilder.append("\n self report valence: ").append(selfValence);
-        extraBuilder.append("\n self report categorical: ").append(selfCategorical);
-        extraBuilder.append("\n self report custom: ").append(customCategory);
-        extraBuilder.append("\n predicted arousal: ").append(predictedArousal);
-        extraBuilder.append("\n predicated valence: ").append(predictedValence);
-        extraBuilder.append("\n predicated category: ").append(predictedCategory);
-
-        Log.i(TAG, "processExtra: " + extraBuilder);
-    }
-
-    private void initFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment;
-        Random random = new Random();
-        float rnd = random.nextFloat();
-        Log.i(TAG, "onCreate: randomVal: " + rnd);
-        if (rnd > 0.5) {
-            fragment = new CategoricalResultsFragment();
-            fragment.setArguments(getIntent().getExtras());
-            systemMode = 0;
-        } else {
-            fragment = new DimensionalResultsFragment();
-            fragment.setArguments(getIntent().getExtras());
-            systemMode = 1;
-        }
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(binding.systemResultFragment.getId(), fragment);
-        transaction.commit();
-    }
+    FragmentTransaction transaction = fragmentManager.beginTransaction();
+    transaction.replace(binding.systemResultFragment.getId(), fragment);
+    transaction.commit();
+  }
 }

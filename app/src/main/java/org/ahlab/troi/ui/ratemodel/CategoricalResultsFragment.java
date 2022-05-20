@@ -12,30 +12,38 @@ import org.ahlab.troi.R;
 import org.ahlab.troi.databinding.FragmentCategoricalResultsBinding;
 
 public class CategoricalResultsFragment extends Fragment {
-	private String systemPrediction;
-	private FragmentCategoricalResultsBinding binding;
-	public CategoricalResultsFragment() {
-		// Required empty public constructor
-	}
+  private String systemPrediction;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		String[] categories = {getString(R.string.emo_cheerful), getString(R.string.emo_happy), getString(R.string.emo_angry), getString(R.string.emo_nervous), getString(R.string.emo_sad), getString(R.string.emo_neutral)};
-		if (getArguments() != null) {
-			int prediction = getArguments().getInt(getString(R.string.key_predicted_category));
-			systemPrediction = categories[prediction];
-		}
-	}
+  public CategoricalResultsFragment() {
+    // Required empty public constructor
+  }
 
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    String[] categories = {
+      getString(R.string.emo_cheerful),
+      getString(R.string.emo_happy),
+      getString(R.string.emo_angry),
+      getString(R.string.emo_nervous),
+      getString(R.string.emo_sad),
+      getString(R.string.emo_neutral)
+    };
+    if (getArguments() != null) {
+      int prediction = getArguments().getInt(getString(R.string.key_predicted_category));
+      systemPrediction = categories[prediction];
+    }
+  }
 
-		binding = FragmentCategoricalResultsBinding.inflate(inflater,container,false);
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		binding.txtCategorical.setText(systemPrediction);
+    FragmentCategoricalResultsBinding binding =
+        FragmentCategoricalResultsBinding.inflate(inflater, container, false);
 
-		return binding.getRoot();
-	}
+    binding.txtCategorical.setText(systemPrediction);
+
+    return binding.getRoot();
+  }
 }

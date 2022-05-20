@@ -10,8 +10,8 @@
         android:id="@+id/dummy1"
         android:title="" />
     <item
-        android:id="@+id/dummy2"
-        android:title="" />
+        android:id="@+id/battery_level"
+        android:title="Empatica Battery Level: " />
     <item
         android:id="@+id/dummy3"
         android:title="" />

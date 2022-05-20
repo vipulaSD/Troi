@@ -32,13 +32,16 @@
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/menu_main.xml" value="0.5546875" />
         <entry key="..\:/Users/vdis452/Documents/Troi/app/app/src/main/res/menu/navigation_menu.xml" value="0.5546875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30434782608695654" />
+        <entry key="app/src/main/res/layout/activity_system_prediction.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.30434782608695654" />
         <entry key="app/src/main/res/layout/fragment_agreement.xml" value="0.30434782608695654" />
+        <entry key="app/src/main/res/layout/fragment_categorical_self_report.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/fragment_dimensional_result.xml" value="0.30434782608695654" />
         <entry key="app/src/main/res/layout/fragment_dimensional_self_report.xml" value="0.30885416666666665" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.30434782608695654" />
         <entry key="app/src/main/res/layout/fragment_n_p_self_report.xml" value="0.30434782608695654" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.30434782608695654" />
+        <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.30885416666666665" />
       </map>
     </option>
   </component>

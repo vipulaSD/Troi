@@ -75,4 +75,9 @@
     <string name="as_negative_valence">😞</string>
     <string name="as_neutral">😐</string>
     <string name="exit">Exit</string>
+    <string name="affective_scale">affective scale</string>
+    <string name="totally_agree">Totally\nAgree</string>
+    <string name="totally_disagree">Totally\nDisagree</string>
+    <string name="unconfident">Unconfident</string>
+    <string name="very_confident">Very\nConfident</string>
 </resources>
