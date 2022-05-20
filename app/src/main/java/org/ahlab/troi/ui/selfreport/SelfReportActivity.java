@@ -1,4 +1,4 @@
-package org.ahlab.troi;
+package org.ahlab.troi.ui.selfreport;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.ahlab.troi.R;
+import org.ahlab.troi.ui.ratemodel.SystemPredictionActivity;
 import org.ahlab.troi.databinding.ActivitySelfReportBinding;
 
 import java.util.Random;
@@ -49,8 +51,8 @@ public class SelfReportActivity extends AppCompatActivity {
 				intent.putExtra(getString(R.string.key_self_category_custom), customEmotionCategory);
 				intent.putExtra(getString(R.string.key_self_report_mode), 0);
 			} else if (selectedMode == 1) {
-				double arousal = ((NPSelfReportFragment) dataFragment).getArousal();
-				double valence = ((NPSelfReportFragment) dataFragment).getValence();
+				double arousal = ((DimensionalSelfReportFragment) dataFragment).getArousal();
+				double valence = ((DimensionalSelfReportFragment) dataFragment).getValence();
 				intent.putExtra(getString(R.string.key_self_arousal), arousal);
 				intent.putExtra(getString(R.string.key_self_valence), valence);
 				intent.putExtra(getString(R.string.key_self_report_mode), 1);
@@ -74,7 +76,7 @@ public class SelfReportActivity extends AppCompatActivity {
 			fragment = new CategoricalSelfReportFragment();
 			selectedMode = 0;
 		} else {
-			fragment = new NPSelfReportFragment();
+			fragment = new DimensionalSelfReportFragment();
 			selectedMode = 1;
 		}
 

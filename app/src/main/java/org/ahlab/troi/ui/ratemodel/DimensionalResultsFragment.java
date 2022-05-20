@@ -1,18 +1,20 @@
-package org.ahlab.troi;
+package org.ahlab.troi.ui.ratemodel;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.ahlab.troi.databinding.FragmentAVResultBinding;
+import org.ahlab.troi.R;
+import org.ahlab.troi.databinding.FragmentDimensionalResultBinding;
 
-public class AVResultFragment extends Fragment {
-	private FragmentAVResultBinding binding;
+public class DimensionalResultsFragment extends Fragment {
+	private FragmentDimensionalResultBinding binding;
 
-	public AVResultFragment() {
+	public DimensionalResultsFragment() {
 		// Required empty public constructor
 	}
 
@@ -23,9 +25,8 @@ public class AVResultFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		binding = FragmentAVResultBinding.inflate(inflater, container, false);
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentDimensionalResultBinding.inflate(inflater, container, false);
 		if (getArguments() != null) {
 			int arousal = getArguments().getInt(getString(R.string.key_pred_arousal));
 			if (arousal > 1) {

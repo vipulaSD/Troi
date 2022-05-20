@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "10720360216",
-    "project_id": "troi-1ffd1",
-    "storage_bucket": "troi-1ffd1.appspot.com"
+    "project_number": "335975183624",
+    "project_id": "troi-v2",
+    "storage_bucket": "troi-v2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:10720360216:android:713bae32cf770654c0506d",
+        "mobilesdk_app_id": "1:335975183624:android:4628f366a8a79621c1e8bd",
         "android_client_info": {
           "package_name": "org.ahlab.troi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "10720360216-0tm0gba7r6t6h8jj35iopp94bhdisrkp.apps.googleusercontent.com",
+          "client_id": "335975183624-rn587d34aeauu4erod24t3lkpkie7dqs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJm6KVcKLqd4Puypmsv2tBoTeaNR0pvkM"
+          "current_key": "AIzaSyDNgqQ957dhzE1E98LvyRFfAT663b5T6g8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "10720360216-0tm0gba7r6t6h8jj35iopp94bhdisrkp.apps.googleusercontent.com",
+              "client_id": "335975183624-rn587d34aeauu4erod24t3lkpkie7dqs.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

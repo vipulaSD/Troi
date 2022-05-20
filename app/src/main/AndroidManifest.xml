@@ -18,19 +18,18 @@
         android:theme="@style/Theme.Troi"
         tools:replace="android:theme">
         <service
-            android:name=".TroiService"
+            android:name=".service.TroiService"
             android:enabled="true"
             android:exported="true" />
 
 
         <activity
-            android:name=".SystemPredictionActivity"
+            android:name=".ui.ratemodel.SystemPredictionActivity"
             android:exported="false" />
-        <activity android:name=".SelfReportActivity" />
+        <activity android:name=".ui.selfreport.SelfReportActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Troi.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package org.ahlab.troi;
+package org.ahlab.troi.service;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
-class EmpaticaListener implements EmpaDataDelegate {
+public class EmpaticaListener implements EmpaDataDelegate {
 
 	private static EmpaticaListener instance;
 	private final String TAG = "###EMPATICA_LISTENER###";

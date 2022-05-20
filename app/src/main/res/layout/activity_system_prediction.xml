@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SystemPredictionActivity">
+    tools:context=".ui.ratemodel.SystemPredictionActivity">
 
     <TextView
         android:id="@+id/textView5"
@@ -18,7 +18,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/system_result_fragment"
-        android:name="org.ahlab.troi.CategoricalResultsFragment"
+        android:name="org.ahlab.troi.ui.ratemodel.CategoricalResultsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
@@ -47,7 +47,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="0"
-            android:text="Totally\nDisagree"
+            android:text="@string/totally_disagree"
             android:textAlignment="center"
             android:textStyle="italic" />
 
@@ -69,7 +69,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="8dp"
             android:layout_weight="0"
-            android:text="Totally\nAgree"
+            android:text="@string/totally_agree"
             android:textAlignment="center"
             android:textStyle="italic" />
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -97,7 +97,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_weight="0"
-            android:text="Unconfident"
+            android:text="@string/unconfident"
             android:textAlignment="center"
             android:textStyle="italic" />
 
@@ -120,7 +120,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="8dp"
             android:layout_weight="0"
-            android:text="Very\nConfident"
+            android:text="@string/very_confident"
             android:textAlignment="center"
             android:textStyle="italic" />
     </androidx.appcompat.widget.LinearLayoutCompat>

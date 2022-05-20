@@ -1,12 +1,14 @@
-package org.ahlab.troi;
+package org.ahlab.troi.ui.ratemodel;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.ahlab.troi.R;
 import org.ahlab.troi.databinding.FragmentCategoricalResultsBinding;
 
 public class CategoricalResultsFragment extends Fragment {
@@ -21,13 +23,13 @@ public class CategoricalResultsFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		String[] categories = {getString(R.string.emo_cheerful), getString(R.string.emo_happy), getString(R.string.emo_angry), getString(R.string.emo_nervous), getString(R.string.emo_sad), getString(R.string.emo_neutral)};
 		if (getArguments() != null) {
-			int pred = getArguments().getInt(getString(R.string.key_predicted_category));
-			systemPrediction = categories[pred];
+			int prediction = getArguments().getInt(getString(R.string.key_predicted_category));
+			systemPrediction = categories[prediction];
 		}
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 
 		binding = FragmentCategoricalResultsBinding.inflate(inflater,container,false);

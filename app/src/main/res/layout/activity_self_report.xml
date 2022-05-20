@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelfReportActivity">
+    tools:context=".ui.selfreport.SelfReportActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -19,7 +19,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/self_report_stub"
-        android:name="org.ahlab.troi.CategoricalSelfReportFragment"
+        android:name="org.ahlab.troi.ui.selfreport.CategoricalSelfReportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
