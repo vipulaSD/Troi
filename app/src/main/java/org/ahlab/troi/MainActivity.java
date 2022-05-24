@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
   }
 
   private void initService() {
-    Log.i(TAG, "initService: starting service");
+    Log.i(TAG, "Starting Troi Service");
     Intent intent = new Intent(this, TroiService.class);
     startForegroundService(intent);
   }

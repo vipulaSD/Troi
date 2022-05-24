@@ -48,7 +48,6 @@ public class TroiService extends Service {
   private Random random;
   private final Runnable runnable = () -> selfReportNotification(1);
 
-  public TroiService() {}
 
   private void selfReportNotification(int mode) {
     Intent intent = new Intent(getApplicationContext(), SelfReportActivity.class);
@@ -182,7 +181,7 @@ public class TroiService extends Service {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    Log.i(TAG, "starting service: ");
+    Log.i(TAG, " Setting up the notification ");
     Intent notificationIntent = new Intent(this, MainActivity.class);
     PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
