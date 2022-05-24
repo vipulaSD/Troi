@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class SystemPredictionActivity extends AppCompatActivity {
-  private static final String TAG = "#####SYSTEM_REPORT#####";
+  private static final String TAG = "##### SYSTEM_REPORT #####";
   private FirebaseFirestore db;
   private ActivitySystemPredictionBinding binding;
   private int selfReportMode;
@@ -64,7 +64,7 @@ public class SystemPredictionActivity extends AppCompatActivity {
 
     random = new Random();
     processExtra();
-    initFragment();
+    initRatingFragment();
     initButton();
   }
 
@@ -97,14 +97,9 @@ public class SystemPredictionActivity extends AppCompatActivity {
 
           Log.i(
               TAG,
-              "pid : "
-                  + pid
-                  + ", agree: "
-                  + degreeOfAgree
-                  + ", confidence: "
-                  + confidence
-                  + ", comment: "
-                  + comment);
+              String.format(
+                  "pid: %s, agreement: %d, confidence: %d, comment: %s",
+                  pid, degreeOfAgree, confidence, comment));
           Map<String, Object> entry = new HashMap<>();
           entry.put(getString(R.string.key_self_report_mode), selfReportMode);
           if (selfReportMode == 0) {
@@ -131,7 +126,9 @@ public class SystemPredictionActivity extends AppCompatActivity {
               .add(entry)
               .addOnSuccessListener(
                   documentReference ->
-                      Log.i(TAG, "document added with id: " + documentReference.getId()))
+                      Log.i(
+                          TAG,
+                          String.format("document added with id: %s", documentReference.getId())))
               .addOnFailureListener(e -> Log.e(TAG, "Error while saving the entry", e));
 
           Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -163,14 +160,14 @@ public class SystemPredictionActivity extends AppCompatActivity {
     extraBuilder.append("\n predicated valence: ").append(predictedValence);
     extraBuilder.append("\n predicated category: ").append(predictedCategory);
 
-    Log.i(TAG, "processExtra: " + extraBuilder);
+    Log.i(TAG, String.format("processExtra: %s", extraBuilder));
   }
 
-  private void initFragment() {
-    FragmentManager fragmentManager = getSupportFragmentManager();
+  private void initRatingFragment() {
+
     Fragment fragment;
     float rnd = random.nextFloat();
-    Log.i(TAG, "onCreate: randomVal: " + rnd);
+    Log.i(TAG, String.format("onCreate: randomVal: %f", rnd));
     if (rnd > 0.5) {
       fragment = new CategoricalResultsFragment();
       fragment.setArguments(getIntent().getExtras());
@@ -181,6 +178,11 @@ public class SystemPredictionActivity extends AppCompatActivity {
       systemMode = 1;
     }
 
+    replaceFragment(fragment);
+  }
+
+  private void replaceFragment(Fragment fragment) {
+    FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction transaction = fragmentManager.beginTransaction();
     transaction.replace(binding.systemResultFragment.getId(), fragment);
     transaction.commit();

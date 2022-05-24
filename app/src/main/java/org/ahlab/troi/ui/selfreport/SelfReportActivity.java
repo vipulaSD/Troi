@@ -21,8 +21,8 @@ public class SelfReportActivity extends AppCompatActivity {
   private int selectedMode = -1;
   private int triggerMode;
   private int catPrediction;
-  private int arousalPred;
-  private int valencePred;
+  private int arousalPrediction;
+  private int valencePrediction;
   private Random random;
 
   @Override
@@ -37,8 +37,8 @@ public class SelfReportActivity extends AppCompatActivity {
     if (extras != null) {
       triggerMode = extras.getInt(getString(R.string.key_trigger_mode), 0);
       catPrediction = extras.getInt(getString(R.string.key_predicted_category));
-      arousalPred = extras.getInt(getString(R.string.key_pred_arousal));
-      valencePred = extras.getInt(getString(R.string.key_pred_valence));
+      arousalPrediction = extras.getInt(getString(R.string.key_pred_arousal));
+      valencePrediction = extras.getInt(getString(R.string.key_pred_valence));
     }
   }
 
@@ -53,10 +53,9 @@ public class SelfReportActivity extends AppCompatActivity {
                 ((CategoricalSelfReportFragment) dataFragment).getCustomEmotion();
             Log.i(
                 TAG,
-                "category id: "
-                    + selfEmotionCategory
-                    + ", customEmotion: "
-                    + customEmotionCategory);
+                String.format(
+                    "category id: %d, custom emotion: %s",
+                    selfEmotionCategory, customEmotionCategory));
             intent.putExtra(getString(R.string.key_self_category), selfEmotionCategory);
             intent.putExtra(getString(R.string.key_self_category_custom), customEmotionCategory);
             intent.putExtra(getString(R.string.key_self_report_mode), 0);
@@ -66,12 +65,12 @@ public class SelfReportActivity extends AppCompatActivity {
             intent.putExtra(getString(R.string.key_self_arousal), arousal);
             intent.putExtra(getString(R.string.key_self_valence), valence);
             intent.putExtra(getString(R.string.key_self_report_mode), 1);
-            Log.i(TAG, "on data: arousal: " + arousal + ", valence: " + valence);
+            Log.i(TAG, String.format("on data: arousal: %f, valence: %f", arousal, valence));
           }
 
           intent.putExtra(getString(R.string.key_predicted_category), catPrediction);
-          intent.putExtra(getString(R.string.key_pred_arousal), arousalPred);
-          intent.putExtra(getString(R.string.key_pred_valence), valencePred);
+          intent.putExtra(getString(R.string.key_pred_arousal), arousalPrediction);
+          intent.putExtra(getString(R.string.key_pred_valence), valencePrediction);
           intent.putExtra(getString(R.string.key_trigger_mode), triggerMode);
           startActivity(intent);
         });

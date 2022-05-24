@@ -38,6 +38,7 @@ import org.ahlab.troi.databinding.ActivityMainBinding;
 import org.ahlab.troi.service.EmpaticaListener;
 import org.ahlab.troi.service.TroiService;
 import org.ahlab.troi.ui.selfreport.SelfReportActivity;
+import org.ahlab.troi.ui.speech.SpeechInputActivity;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.InterpreterApi;
 import org.tensorflow.lite.InterpreterFactory;
@@ -185,10 +186,11 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 
     // self report button
     binding.btnReport.setOnClickListener(
-        view -> {
-          Intent intent = new Intent(this, SelfReportActivity.class);
-          startActivity(intent);
-        });
+        view -> startActivity(new Intent(this, SelfReportActivity.class)));
+
+    // test speech activity
+    binding.fabTestSpeechInput.setOnClickListener(
+        view -> startActivity(new Intent(this, SpeechInputActivity.class)));
   }
 
   private void initEmpaticaDeviceManager() {

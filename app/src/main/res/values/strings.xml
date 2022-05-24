@@ -80,4 +80,7 @@
     <string name="totally_disagree">Totally\nDisagree</string>
     <string name="unconfident">Unconfident</string>
     <string name="very_confident">Very\nConfident</string>
+    <string name="record_audio">Record audio</string>
+    <string name="dummy_text">The quick brown fox jumps over the lazy dog</string>
+    <string name="title_activity_speech_input">SpeechInputActivity</string>
 </resources>
