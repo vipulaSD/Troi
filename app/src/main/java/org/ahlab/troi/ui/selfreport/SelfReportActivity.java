@@ -11,18 +11,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import org.ahlab.troi.R;
 import org.ahlab.troi.databinding.ActivitySelfReportBinding;
-import org.ahlab.troi.ui.ratemodel.SystemPredictionActivity;
+import org.ahlab.troi.ui.speech.SpeechInputActivity;
 
 import java.util.Random;
 
 public class SelfReportActivity extends AppCompatActivity {
-  private static final String TAG = "#####SELF_REPORT#####";
+  private static final String TAG = "### SELF_REPORT ###";
   private ActivitySelfReportBinding binding;
   private int selectedMode = -1;
-  private int triggerMode;
-  private int catPrediction;
-  private int arousalPrediction;
-  private int valencePrediction;
   private Random random;
 
   @Override
@@ -33,47 +29,32 @@ public class SelfReportActivity extends AppCompatActivity {
     setContentView(binding.getRoot());
     Fragment fragment = initFragment();
     initButtons(fragment);
-    Bundle extras = getIntent().getExtras();
-    if (extras != null) {
-      triggerMode = extras.getInt(getString(R.string.key_trigger_mode), 0);
-      catPrediction = extras.getInt(getString(R.string.key_predicted_category));
-      arousalPrediction = extras.getInt(getString(R.string.key_pred_arousal));
-      valencePrediction = extras.getInt(getString(R.string.key_pred_valence));
-    }
   }
 
   private void initButtons(Fragment dataFragment) {
-    binding.btnSubmitReport.setOnClickListener(
-        view -> {
-          Intent intent = new Intent(this, SystemPredictionActivity.class);
-          if (selectedMode == 0) {
-            int selfEmotionCategory =
-                ((CategoricalSelfReportFragment) dataFragment).getCategoricalEmotion();
-            String customEmotionCategory =
-                ((CategoricalSelfReportFragment) dataFragment).getCustomEmotion();
-            Log.i(
-                TAG,
-                String.format(
-                    "category id: %d, custom emotion: %s",
-                    selfEmotionCategory, customEmotionCategory));
-            intent.putExtra(getString(R.string.key_self_category), selfEmotionCategory);
-            intent.putExtra(getString(R.string.key_self_category_custom), customEmotionCategory);
-            intent.putExtra(getString(R.string.key_self_report_mode), 0);
-          } else if (selectedMode == 1) {
-            double arousal = ((DimensionalSelfReportFragment) dataFragment).getArousal();
-            double valence = ((DimensionalSelfReportFragment) dataFragment).getValence();
-            intent.putExtra(getString(R.string.key_self_arousal), arousal);
-            intent.putExtra(getString(R.string.key_self_valence), valence);
-            intent.putExtra(getString(R.string.key_self_report_mode), 1);
-            Log.i(TAG, String.format("on data: arousal: %f, valence: %f", arousal, valence));
-          }
+    binding.btnSubmitReport.setOnClickListener(view -> goToPrediction(dataFragment));
+  }
 
-          intent.putExtra(getString(R.string.key_predicted_category), catPrediction);
-          intent.putExtra(getString(R.string.key_pred_arousal), arousalPrediction);
-          intent.putExtra(getString(R.string.key_pred_valence), valencePrediction);
-          intent.putExtra(getString(R.string.key_trigger_mode), triggerMode);
-          startActivity(intent);
-        });
+  private void goToPrediction(Fragment dataFragment) {
+    Intent intent = new Intent(this, SpeechInputActivity.class);
+    if (selectedMode == 0) {
+      int categorical = ((CategoricalSelfReportFragment) dataFragment).getCategoricalEmotion();
+      String customEmotion = ((CategoricalSelfReportFragment) dataFragment).getCustomEmotion();
+      Log.i(TAG, String.format("category id: %d, custom emotion: %s", categorical, customEmotion));
+
+      intent.putExtra(getString(R.string.key_self_category), categorical);
+      intent.putExtra(getString(R.string.key_self_category_custom), customEmotion);
+      intent.putExtra(getString(R.string.key_self_report_mode), 0);
+
+    } else if (selectedMode == 1) {
+      double arousal = ((DimensionalSelfReportFragment) dataFragment).getArousal();
+      double valence = ((DimensionalSelfReportFragment) dataFragment).getValence();
+      intent.putExtra(getString(R.string.key_self_arousal), arousal);
+      intent.putExtra(getString(R.string.key_self_valence), valence);
+      intent.putExtra(getString(R.string.key_self_report_mode), 1);
+      Log.i(TAG, String.format("on data: arousal: %f, valence: %f", arousal, valence));
+    }
+    startActivity(intent);
   }
 
   private Fragment initFragment() {

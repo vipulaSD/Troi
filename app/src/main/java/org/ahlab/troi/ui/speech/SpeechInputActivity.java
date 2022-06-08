@@ -162,16 +162,19 @@ public class SpeechInputActivity extends AppCompatActivity {
           passThrough.getInt(getString(R.string.key_self_report_mode), -1));
       intent.putExtra(
           getString(R.string.key_self_arousal),
-          passThrough.getInt(getString(R.string.key_self_arousal), -1));
+          passThrough.getDouble(getString(R.string.key_self_arousal), -1));
       intent.putExtra(
           getString(R.string.key_self_valence),
-          passThrough.getInt(getString(R.string.key_self_valence), -1));
+          passThrough.getDouble(getString(R.string.key_self_valence), -1));
       intent.putExtra(
           getString(R.string.key_self_category),
           passThrough.getInt(getString(R.string.key_self_category), -1));
       intent.putExtra(
           getString(R.string.key_self_category_custom),
           passThrough.getString(getString(R.string.key_self_category_custom), ""));
+      intent.putExtra(
+          getString(R.string.key_self_report_mode),
+          passThrough.getInt(getString(R.string.key_self_report_mode), -1));
     }
 
     startActivity(intent);

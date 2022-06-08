@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,15 +35,11 @@ public class SystemPredictionActivity extends AppCompatActivity {
   private double selfValence;
   private int selfCategorical;
   private String customCategory;
-  private int predictedArousal;
-  private int predictedValence;
-  private int predictedCategory;
+  private int predArousal;
+  private int predValence;
+  private int predCategory;
   private int systemMode;
-  private int degreeOfAgree;
-  private int confidence;
   private String comment = "";
-  private String pid;
-  private int triggerMode;
   private Random random;
 
   @Override
@@ -50,6 +47,16 @@ public class SystemPredictionActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     binding = ActivitySystemPredictionBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
+
+    random = new Random();
+
+    initFirebase();
+    processExtra();
+    initRatingFragment();
+    initButton();
+  }
+
+  private void initFirebase() {
     db = FirebaseFirestore.getInstance();
     FirebaseFirestoreSettings settings =
         new FirebaseFirestoreSettings.Builder()
@@ -57,15 +64,6 @@ public class SystemPredictionActivity extends AppCompatActivity {
             .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
             .build();
     db.setFirestoreSettings(settings);
-
-    SharedPreferences preferences =
-        getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
-    pid = preferences.getString(getString(R.string.key_pid), "");
-
-    random = new Random();
-    processExtra();
-    initRatingFragment();
-    initButton();
   }
 
   private void initButton() {
@@ -90,51 +88,68 @@ public class SystemPredictionActivity extends AppCompatActivity {
             comment = editable.toString();
           }
         });
-    binding.btnSubmitFeedback.setOnClickListener(
-        view -> {
-          degreeOfAgree = (int) binding.seekAgreeable.getValue();
-          confidence = (int) binding.seekConfidence.getValue();
+    binding.btnSubmitFeedback.setOnClickListener(view -> submitFeedback());
+  }
 
-          Log.i(
-              TAG,
-              String.format(
-                  "pid: %s, agreement: %d, confidence: %d, comment: %s",
-                  pid, degreeOfAgree, confidence, comment));
-          Map<String, Object> entry = new HashMap<>();
-          entry.put(getString(R.string.key_self_report_mode), selfReportMode);
-          if (selfReportMode == 0) {
-            entry.put(getString(R.string.key_self_category), selfCategorical);
-            entry.put(getString(R.string.key_self_category_custom), customCategory);
-          } else {
-            entry.put(getString(R.string.key_self_arousal), selfArousal);
-            entry.put(getString(R.string.key_self_valence), selfValence);
-          }
-          entry.put(getString(R.string.key_pred_mode), systemMode);
-          if (systemMode == 0) {
-            entry.put(getString(R.string.key_predicted_category), predictedCategory);
-          } else {
-            entry.put(getString(R.string.key_pred_arousal), predictedArousal);
-            entry.put(getString(R.string.key_pred_valence), predictedValence);
-          }
-          entry.put(getString(R.string.key_trigger_mode), triggerMode);
-          entry.put(getString(R.string.key_agree), degreeOfAgree);
-          entry.put(getString(R.string.key_confidence), confidence);
-          entry.put(getString(R.string.key_comment), comment);
-          entry.put("key_ts", new Date());
+  private void submitFeedback() {
+    int degreeOfAgree = (int) binding.seekAgreeable.getValue();
+    int confidence = (int) binding.seekConfidence.getValue();
+    String pid = getParticipantID();
+    Log.i(
+        TAG,
+        String.format(
+            "pid: %s, agreement: %d, confidence: %d, comment: %s",
+            pid, degreeOfAgree, confidence, comment));
+    Map<String, Object> entry = prepareFirebaseDataObject(degreeOfAgree, confidence);
 
-          db.collection(pid)
-              .add(entry)
-              .addOnSuccessListener(
-                  documentReference ->
-                      Log.i(
-                          TAG,
-                          String.format("document added with id: %s", documentReference.getId())))
-              .addOnFailureListener(e -> Log.e(TAG, "Error while saving the entry", e));
+    updateDatabase(pid, entry);
 
-          Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-          startActivity(intent);
-        });
+    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(intent);
+  }
+
+  private void updateDatabase(String pid, Map<String, Object> entry) {
+    db.collection(pid)
+        .add(entry)
+        .addOnSuccessListener(
+            documentReference ->
+                Log.i(TAG, String.format("document added with id: %s", documentReference.getId())))
+        .addOnFailureListener(e -> Log.e(TAG, "Error while saving the entry", e));
+  }
+
+  @NonNull
+  private Map<String, Object> prepareFirebaseDataObject(int degreeOfAgree, int confidence) {
+    Map<String, Object> entry = new HashMap<>();
+
+    entry.put(getString(R.string.key_self_report_mode), selfReportMode);
+    if (selfReportMode == 0) {
+      entry.put(getString(R.string.key_self_category), selfCategorical);
+      entry.put(getString(R.string.key_self_category_custom), customCategory);
+    } else {
+      entry.put(getString(R.string.key_self_arousal), selfArousal);
+      entry.put(getString(R.string.key_self_valence), selfValence);
+    }
+
+    entry.put(getString(R.string.key_pred_mode), systemMode);
+    if (systemMode == 0) {
+      entry.put(getString(R.string.key_predicted_category), predCategory);
+    } else {
+      entry.put(getString(R.string.key_pred_arousal), predArousal);
+      entry.put(getString(R.string.key_pred_valence), predValence);
+    }
+
+    entry.put(getString(R.string.key_agree), degreeOfAgree);
+    entry.put(getString(R.string.key_confidence), confidence);
+    entry.put(getString(R.string.key_comment), comment);
+    entry.put("key_ts", new Date());
+    return entry;
+  }
+
+  private String getParticipantID() {
+    SharedPreferences preferences =
+        getSharedPreferences(getString(R.string.shared_preference), Context.MODE_PRIVATE);
+    return preferences.getString(getString(R.string.key_pid), "");
   }
 
   private void processExtra() {
@@ -145,20 +160,19 @@ public class SystemPredictionActivity extends AppCompatActivity {
     selfValence = extras.getDouble(getString(R.string.key_self_valence));
     selfCategorical = extras.getInt(getString(R.string.key_self_category));
     customCategory = extras.getString(getString(R.string.key_self_category_custom), "");
-    predictedArousal = extras.getInt(getString(R.string.key_pred_arousal));
-    predictedValence = extras.getInt(getString(R.string.key_pred_valence));
-    predictedCategory = extras.getInt(getString(R.string.key_predicted_category));
-    triggerMode = extras.getInt(getString(R.string.key_trigger_mode));
+    predArousal = extras.getInt(getString(R.string.key_pred_arousal));
+    predValence = extras.getInt(getString(R.string.key_pred_valence));
+    predCategory = extras.getInt(getString(R.string.key_predicted_category));
 
     StringBuilder extraBuilder = new StringBuilder("Extras: ");
-    extraBuilder.append("\nself report mode: ").append(selfReportMode);
+    extraBuilder.append("\n self report mode: ").append(selfReportMode);
     extraBuilder.append("\n self report arousal: ").append(selfArousal);
     extraBuilder.append("\n self report valence: ").append(selfValence);
     extraBuilder.append("\n self report categorical: ").append(selfCategorical);
     extraBuilder.append("\n self report custom: ").append(customCategory);
-    extraBuilder.append("\n predicted arousal: ").append(predictedArousal);
-    extraBuilder.append("\n predicated valence: ").append(predictedValence);
-    extraBuilder.append("\n predicated category: ").append(predictedCategory);
+    extraBuilder.append("\n predicted arousal: ").append(predArousal);
+    extraBuilder.append("\n predicated valence: ").append(predValence);
+    extraBuilder.append("\n predicated category: ").append(predCategory);
 
     Log.i(TAG, String.format("processExtra: %s", extraBuilder));
   }
