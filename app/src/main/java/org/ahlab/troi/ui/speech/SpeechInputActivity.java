@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -85,6 +87,9 @@ public class SpeechInputActivity extends AppCompatActivity {
     if (!checkPermission()) {
       return;
     }
+    binding.fabRecord.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+    binding.fabRecord.setImageResource(R.drawable.ic_baseline_stop_24);
+    binding.fabRecord.setImageTintList(ColorStateList.valueOf(Color.WHITE));
     if (recordThread == null) {
       recordThread = new AudioRecordThread();
     }

@@ -35,8 +35,15 @@
             android:theme="@style/Theme.Troi.NoActionBar" />
         <activity
             android:name=".ui.ratemodel.SystemPredictionActivity"
-            android:exported="false" />
-        <activity android:name=".ui.selfreport.SelfReportActivity" />
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.Troi.NoActionBar" />
+
+        <activity
+            android:name=".ui.selfreport.SelfReportActivity"
+            android:exported="false"
+            android:noHistory="true"
+            android:theme="@style/Theme.Troi.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
