@@ -71,7 +71,11 @@ public class EmpaticaListener implements EmpaDataDelegate {
     accArray = StatUtils.normalize(accArray);
 
     for (int i = 0; i < 384; i++) {
-      ret[i] = (float) accArray[i];
+      if (i < accArray.length) {
+        ret[i] = (float) accArray[i];
+      } else {
+        ret[i] = 0.0f;
+      }
     }
     return ret;
   }
@@ -82,7 +86,11 @@ public class EmpaticaListener implements EmpaDataDelegate {
     double[] edaD = ArrayUtils.toPrimitive(eda.toArray(new Double[0]), 0.0);
     edaD = StatUtils.normalize(edaD);
     for (int i = 0; i < 16; i++) {
-      ret[i] = (float) edaD[i];
+      if (i < edaD.length) {
+        ret[i] = (float) edaD[i];
+      } else {
+        ret[i] = 0.0f;
+      }
     }
     return ret;
   }
@@ -93,7 +101,11 @@ public class EmpaticaListener implements EmpaDataDelegate {
     double[] bvpD = ArrayUtils.toPrimitive(bvp.toArray(new Double[0]), 0.0);
     bvpD = StatUtils.normalize(bvpD);
     for (int i = 0; i < 256; i++) {
-      ret[i] = (float) bvpD[i];
+      if (i < bvpD.length) {
+        ret[i] = (float) bvpD[i];
+      } else {
+        ret[i] = 0.0f;
+      }
     }
     return ret;
   }
@@ -103,7 +115,11 @@ public class EmpaticaListener implements EmpaDataDelegate {
     double[] tmpD = ArrayUtils.toPrimitive(tempQueue.toArray(new Double[0]), 0.0);
     tmpD = StatUtils.normalize(tmpD);
     for (int i = 0; i < 16; i++) {
-      ret[i] = (float) tmpD[i];
+      if (i < tmpD.length) {
+        ret[i] = (float) tmpD[i];
+      } else {
+        ret[i] = 0.0f;
+      }
     }
     return ret;
   }

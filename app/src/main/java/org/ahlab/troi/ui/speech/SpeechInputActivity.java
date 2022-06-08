@@ -1,11 +1,14 @@
 package org.ahlab.troi.ui.speech;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -18,15 +21,24 @@ import androidx.core.content.ContextCompat;
 import org.ahlab.troi.databinding.ActivitySpeechInputBinding;
 import org.ahlab.troi.service.MLService;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class SpeechInputActivity extends AppCompatActivity {
+
   private static final String TAG = "### Speech Input Activity ###";
   private static final int AUDIO_RECORD_PERMISSION_REQUEST_ID = 9;
+
   private final List<String> neutralSentences =
       new ArrayList<>(
           Arrays.asList(
@@ -45,10 +57,8 @@ public class SpeechInputActivity extends AppCompatActivity {
               "I think I’ve seen this before",
               "The surface is slick"));
   boolean recording;
-  private String filename;
   private ActivitySpeechInputBinding binding;
   private Random random;
-  private MediaRecorder recorder;
   private MLService mlService;
   private boolean isServiceBound = false;
   private final ServiceConnection connection =
@@ -67,6 +77,20 @@ public class SpeechInputActivity extends AppCompatActivity {
           isServiceBound = false;
         }
       };
+  private AudioRecordThread recordThread;
+
+  private void startRecording() {
+    if (!checkPermission()) {
+      return;
+    }
+    if (recordThread == null) {
+      recordThread = new AudioRecordThread();
+    }
+    if (!recordThread.isRunning()) {
+      recordThread.start();
+      recording = true;
+    }
+  }
 
   @Override
   protected void onStart() {
@@ -89,42 +113,8 @@ public class SpeechInputActivity extends AppCompatActivity {
     binding = ActivitySpeechInputBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     random = new Random();
-    filename = String.format("%s/speech.mp3", getExternalCacheDir().getAbsolutePath());
     checkPermission();
     initButton();
-  }
-
-  private void startRecording() {
-    if (!checkPermission()) {
-      return;
-    }
-    recorder = new MediaRecorder();
-    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-    recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-    recorder.setOutputFile(filename);
-    try {
-      recorder.prepare();
-    } catch (IOException e) {
-      Log.e(TAG, "Error while starting audio recording: ", e);
-    }
-    recorder.start();
-    recording = true;
-
-  }
-
-  private boolean endRecording() {
-    if (recorder == null) {
-      return false;
-    }
-    recorder.stop();
-    recorder.reset();
-    recorder.release();
-    recorder = null;
-    recording = false;
-
-    Log.i(TAG, "Finish recording audio");
-    return true;
   }
 
   private boolean checkPermission() {
@@ -143,14 +133,24 @@ public class SpeechInputActivity extends AppCompatActivity {
     binding.fabRecord.setOnClickListener(
         view -> {
           if (recording) {
-            if (endRecording() && isServiceBound) {
-              Log.i(TAG, String.format("Service Output: %s", mlService.makePrediction()));
+            endRecording();
+            if (isServiceBound) {
+              Log.i(
+                  TAG,
+                  String.format("Service Output: %s", Arrays.toString(mlService.makePrediction())));
             }
             recording = !recording;
           } else {
             startRecording();
           }
         });
+  }
+
+  private void endRecording() {
+    if (recordThread != null) {
+      recordThread.stopRecording();
+      recordThread = null;
+    }
   }
 
   @Override
@@ -162,5 +162,194 @@ public class SpeechInputActivity extends AppCompatActivity {
   private void provideSentence() {
     String sentence = neutralSentences.get(random.nextInt(neutralSentences.size()));
     binding.prompt.setText(sentence);
+  }
+
+  private class AudioRecordThread extends Thread {
+    public static final int SAMPLE_RATE_IN_HZ = 16000;
+    public static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
+    public static final int AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    private final int minBufferSize =
+        2 * AudioRecord.getMinBufferSize(SAMPLE_RATE_IN_HZ, CHANNEL_MASK, AUDIO_ENCODING);
+    private AudioRecord audioRecord;
+    private boolean isRunning;
+    private File file;
+
+    public boolean isRunning() {
+      return isRunning;
+    }
+
+    private void writeWavHeader(OutputStream out) {
+      // Convert the multi-byte integers to raw bytes in little endian format as required by
+      // the
+      // spec
+      byte[] littleBytes =
+          ByteBuffer.allocate(14)
+              .order(ByteOrder.LITTLE_ENDIAN)
+              .putShort((short) 1)
+              .putInt(AudioRecordThread.SAMPLE_RATE_IN_HZ)
+              .putInt(AudioRecordThread.SAMPLE_RATE_IN_HZ * ((short) 16 / 8))
+              .putShort((short) ((short) 16 / 8))
+              .putShort((short) 16)
+              .array();
+
+      // Not necessarily the best, but it's very easy to visualize this way
+      try {
+
+        out.write(
+            new byte[] {
+              'R',
+              'I',
+              'F',
+              'F',
+              0,
+              0,
+              0,
+              0,
+              'W',
+              'A',
+              'V',
+              'E',
+              'f',
+              'm',
+              't',
+              ' ',
+              16,
+              0,
+              0,
+              0,
+              1,
+              0,
+              littleBytes[0],
+              littleBytes[1],
+              littleBytes[2],
+              littleBytes[3],
+              littleBytes[4],
+              littleBytes[5],
+              littleBytes[6],
+              littleBytes[7],
+              littleBytes[8],
+              littleBytes[9],
+              littleBytes[10],
+              littleBytes[11],
+              littleBytes[12],
+              littleBytes[13],
+              'd',
+              'a',
+              't',
+              'a',
+              0,
+              0,
+              0,
+              0
+            });
+
+      } catch (IOException e) {
+        Log.e(TAG, "error while writing headers", e);
+      }
+    }
+
+    private void updateWavHeader(File wav) {
+
+      byte[] sizes =
+          ByteBuffer.allocate(8)
+              .order(ByteOrder.LITTLE_ENDIAN)
+              .putInt((int) (wav.length() - 8))
+              .putInt((int) (wav.length() - 44))
+              .array();
+
+      try (RandomAccessFile accessWave = new RandomAccessFile(wav, "rw")) {
+        // ChunkSize
+        accessWave.seek(4);
+        accessWave.write(sizes, 0, 4);
+
+        // SubChunk2Size
+        accessWave.seek(40);
+        accessWave.write(sizes, 4, 4);
+      } catch (IOException ex) {
+        // Rethrow but we still close accessWave in our finally
+        Log.e(TAG, "updateWavHeader: ", ex);
+      }
+      //
+    }
+
+    @Override
+    public void run() {
+      super.run();
+
+      initAudioRecord();
+      audioRecord.startRecording();
+      file = new File(String.format("%s/speech.wav", getExternalCacheDir().getAbsolutePath()));
+      if (file.exists()) {
+        Log.i(TAG, String.format("existing file length: %d", file.length()));
+      }
+      try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+        writeWavHeader(outputStream);
+
+        writeAudioData(outputStream);
+
+      } catch (FileNotFoundException e) {
+        Log.e(TAG, "error creating the output file", e);
+      } catch (IOException e) {
+        Log.e(TAG, "error while writing the wav file", e);
+      } finally {
+        if (audioRecord != null) {
+          if (audioRecord.getRecordingState() == AudioRecord.RECORDSTATE_RECORDING) {
+            audioRecord.stop();
+          }
+          if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+            audioRecord.release();
+          }
+        }
+      }
+      updateWavHeader(file);
+    }
+
+    public void stopRecording() {
+      if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+        audioRecord.stop();
+        audioRecord.release();
+        isRunning = false;
+      }
+    }
+
+    private void writeAudioData(FileOutputStream outputStream) throws IOException {
+      isRunning = true;
+      Log.i(TAG, "writeAudioData: started");
+      long total = 0;
+      byte[] buffer = new byte[minBufferSize];
+      while (isRunning && audioRecord != null) {
+        int read = audioRecord.read(buffer, 0, buffer.length);
+        if (total + read > 4294967295L) {
+
+          for (int i = 0; i < read && total <= 4294967295L; i++, total++) {
+            outputStream.write(buffer[i]);
+          }
+          isRunning = false;
+        } else {
+          try {
+            outputStream.write(buffer, 0, read);
+            total += read;
+          } catch (Exception e) {
+            Log.e(TAG, "writeAudioData: ", e);
+          }
+        }
+        updateWavHeader(file);
+      }
+    }
+
+    @SuppressLint("MissingPermission") // permission already checked before the thread.
+    private void initAudioRecord() {
+      audioRecord =
+          new AudioRecord.Builder()
+              .setAudioSource(MediaRecorder.AudioSource.MIC)
+              .setAudioFormat(
+                  new AudioFormat.Builder()
+                      .setEncoding(AUDIO_ENCODING)
+                      .setSampleRate(SAMPLE_RATE_IN_HZ)
+                      .setChannelMask(CHANNEL_MASK)
+                      .build())
+              .setBufferSizeInBytes(minBufferSize)
+              .build();
+    }
   }
 }
