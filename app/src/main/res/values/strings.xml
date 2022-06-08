@@ -56,19 +56,18 @@
     <string name="confidence_question">How confident were you with your judgment?</string>
     <string name="enter_how_you_feel_optional">Enter how you feel (optional)</string>
     <string name="any_comment_optional">Any further comment (Optional)</string>
-    <string name="key_self_category">KEY_SELF_CATEGORY</string>
-    <string name="key_self_category_custom">KEY_SELF_CATEGORY_CUSTOM</string>
+    <string name="key_self_category">SELF_CATEGORY</string>
+    <string name="key_self_category_custom">SELF_CATEGORY_CUSTOM</string>
     <string name="key_self_report_mode">SELF_MODE</string>
     <string name="key_self_arousal">SELF_AROUSAL</string>
     <string name="key_self_valence">SELF_VALENCE</string>
-    <string name="key_predicted_category">KEY_PREDICTED_CATEGORY</string>
-    <string name="key_pred_arousal">KEY_PREDICTED_AROUSAL</string>
-    <string name="key_pred_valence">KEY_PREDICTED_VALENCE</string>
-    <string name="key_pred_mode">KEY_PRED_MODE</string>
-    <string name="key_trigger_mode">KEY_TRIGGER_MODE</string>
-    <string name="key_agree">KEY_AGREE</string>
-    <string name="key_confidence">KEY_CONFIDENCE</string>
-    <string name="key_comment">KEY_COMMENT</string>
+    <string name="key_predicted_category">PREDICTED_CATEGORY</string>
+    <string name="key_pred_arousal">PREDICTED_AROUSAL</string>
+    <string name="key_pred_valence">PREDICTED_VALENCE</string>
+    <string name="key_pred_mode">PRED_MODE</string>
+    <string name="key_agree">AGREE</string>
+    <string name="key_confidence">CONFIDENCE</string>
+    <string name="key_comment">COMMENT</string>
     <string name="as_low_arousal">😴</string>
     <string name="as_high_arousal">😳</string>
     <string name="as_positive_valence">😀</string>
@@ -83,4 +82,5 @@
     <string name="record_audio">Record audio</string>
     <string name="dummy_text">The quick brown fox jumps over the lazy dog</string>
     <string name="title_activity_speech_input">SpeechInputActivity</string>
+    <string name="instruction_speech_input">Press the record button and read the following sentence. Once recording is finished press the stop button.</string>
 </resources>

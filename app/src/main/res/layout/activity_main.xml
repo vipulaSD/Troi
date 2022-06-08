@@ -72,19 +72,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!--temporary element to test-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_test_speech_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="40dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="?android:attr/textSelectHandleLeft" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

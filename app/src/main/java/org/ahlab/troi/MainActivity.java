@@ -38,17 +38,12 @@ import org.ahlab.troi.databinding.ActivityMainBinding;
 import org.ahlab.troi.service.EmpaticaListener;
 import org.ahlab.troi.service.TroiService;
 import org.ahlab.troi.ui.selfreport.SelfReportActivity;
-import org.ahlab.troi.ui.speech.SpeechInputActivity;
-import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.InterpreterApi;
 import org.tensorflow.lite.InterpreterFactory;
-import org.tensorflow.lite.Tensor;
 import org.tensorflow.lite.support.common.FileUtil;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -174,23 +169,9 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
           binding.tvStatus.setText(R.string.status_e4_search_device);
         });
 
-    // prediction button
-    binding.btnPrediction.setOnClickListener(
-        view -> {
-          if (empaticaListener.isDataReady()) {
-            makePrediction();
-          } else {
-            Log.i(TAG, "waiting for data");
-          }
-        });
-
     // self report button
     binding.btnReport.setOnClickListener(
         view -> startActivity(new Intent(this, SelfReportActivity.class)));
-
-    // test speech activity
-    binding.fabTestSpeechInput.setOnClickListener(
-        view -> startActivity(new Intent(this, SpeechInputActivity.class)));
   }
 
   private void initEmpaticaDeviceManager() {
@@ -207,74 +188,6 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
       deviceManager = new EmpaDeviceManager(getApplicationContext(), empaticaListener, this);
       deviceManager.authenticateWithAPIKey(getResources().getString(R.string.empatica_api_key));
     }
-  }
-
-  private void makePrediction() {
-    if (tflite == null) {
-      Log.i(TAG, "makePrediction: Error loading model");
-      return;
-    }
-    int numInputs = tflite.getInputTensorCount();
-    Object[] inputs = new Object[numInputs];
-    Log.i(TAG, "makePrediction: num inputs: " + numInputs);
-    for (int i = 0; i < numInputs; i++) {
-      Tensor input = tflite.getInputTensor(i);
-      Log.i(TAG, "makePrediction: input name: " + input.name());
-      Log.i(TAG, "makePrediction: input shape: " + Arrays.toString(input.shape()));
-      Log.i(TAG, "makePrediction: input type: " + input.dataType());
-
-      float[] tmp;
-
-      if (i == 0) {
-        tmp = empaticaListener.getEDASnapshot();
-      } else if (i == 1) {
-        tmp = empaticaListener.getBVPSnapshot();
-      } else if (i == 2) {
-        tmp = empaticaListener.getAccSnapshot();
-      } else {
-        tmp = empaticaListener.getTempSnapshot();
-      }
-
-      Log.i(TAG, "makePrediction: data: " + Arrays.toString(tmp));
-
-      TensorBuffer bufferFloat = TensorBuffer.createFixedSize(input.shape(), DataType.FLOAT32);
-      bufferFloat.loadArray(tmp);
-      inputs[i] = bufferFloat.getBuffer();
-    }
-
-    Tensor output = tflite.getOutputTensor(0);
-    Log.i(TAG, "makePrediction: output name: " + output.name());
-    Log.i(TAG, "makePrediction: output shape: " + Arrays.toString(output.shape()));
-    Log.i(TAG, "makePrediction: output type: " + output.dataType());
-    Map<Integer, Object> outputs = new HashMap<>();
-    float[][] out = new float[][] {{0, 0, 0, 0, 0, 0}};
-    outputs.put(0, out);
-    tflite.runForMultipleInputsOutputs(inputs, outputs);
-
-    float[][] prediction = (float[][]) outputs.get(0);
-    if (prediction == null) {
-      return;
-    }
-    String[] emotionLabels = {"cheerful", "happy", "angry", "nervous", "sad", "neutral"};
-
-    float max = Float.MIN_VALUE;
-    int argmax = -1;
-
-    for (int i = 0; i < 6; i++) {
-      if (max < prediction[0][i]) {
-        max = prediction[0][i];
-        argmax = i;
-      }
-      Log.i(TAG, "makePrediction: " + emotionLabels[i] + " -> " + prediction[0][i]);
-    }
-    if (argmax == -1) {
-      return;
-    }
-    String emotionLabel = emotionLabels[argmax];
-    Log.i(TAG, "makePrediction: final prediction " + emotionLabel + " prob: " + max);
-    emotionDistro.put(emotionLabels[argmax], emotionDistro.getOrDefault(emotionLabel, 0) + 1);
-
-    Log.i(TAG, "makePrediction: " + emotionDistro);
   }
 
   private void initView() {
@@ -399,13 +312,13 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
 
   @Override
   public void didUpdateSensorStatus(int status, EmpaSensorType type) {
-    Log.i(TAG, "didUpdateSensorStatus: " + status);
+    Log.i(TAG, String.format("didUpdateSensorStatus: %s", status));
   }
 
   @Override
   public void didDiscoverDevice(
       EmpaticaDevice device, String deviceLabel, int rssi, boolean allowed) {
-    Log.i(TAG, "didDiscoverDevice" + deviceLabel + "allowed: " + allowed);
+    Log.i(TAG, String.format("didDiscoverDevice: %s, allowed: %s", deviceLabel, allowed));
 
     if (allowed) {
       // Stop scanning. The first allowed device will do.
@@ -413,14 +326,17 @@ public class MainActivity extends AppCompatActivity implements EmpaStatusDelegat
       try {
         // Connect to the device
         deviceManager.connectDevice(device);
-        updateLabel(binding.tvStatus, "Connecting to: " + deviceLabel);
+        updateLabel(binding.tvStatus, String.format("Connecting to: %s", deviceLabel));
 
       } catch (ConnectionNotAllowedException e) {
         // This should happen only if you try to connect when allowed == false.
         Toast.makeText(
                 MainActivity.this, "Sorry, you can't connect to this device", Toast.LENGTH_SHORT)
             .show();
-        Log.e(TAG, "didDiscoverDevice" + deviceLabel + " - ConnectionNotAllowedException", e);
+        Log.e(
+            TAG,
+            String.format("didDiscoverDevice %s - ConnectionNotAllowedException", deviceLabel),
+            e);
       }
     }
   }

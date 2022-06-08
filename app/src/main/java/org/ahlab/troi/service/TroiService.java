@@ -27,17 +27,16 @@ import java.util.Random;
 public class TroiService extends Service {
   private static final String NOTIFICATION_CHANNEL_ID = "troi_notification_channel";
   private static final String HP_NOTIFICATION_CHANNEL_ID = "troi_high_priority";
-  private static final long NOTIFY_INTERVAL = 20 * 1000 * 60L; // 20 minute timer
+  private static final long NOTIFY_INTERVAL = 45 * 1000 * 60L; // 20 minute timer
   private static final String TAG = "### TROI_SERVICE ###";
 
   private NotificationManager notificationManager;
   private Handler periodicHandler;
   private Random random;
-  private final Runnable runnable = () -> selfReportNotification(1);
+  private final Runnable runnable = this::selfReportNotification;
 
-  private void selfReportNotification(int mode) {
+  private void selfReportNotification() {
     Intent intent = new Intent(getApplicationContext(), SelfReportActivity.class);
-    intent.putExtra(getString(R.string.key_trigger_mode), mode);
     PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 1, intent, 0);
     Notification notification =
         new Notification.Builder(getApplicationContext(), HP_NOTIFICATION_CHANNEL_ID)
