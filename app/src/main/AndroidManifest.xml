@@ -21,16 +21,17 @@
         <service
             android:name=".service.MLService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false" />
         <service
             android:name=".service.TroiService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity
             android:name=".ui.speech.SpeechInputActivity"
             android:exported="false"
             android:label="@string/title_activity_speech_input"
+            android:noHistory="true"
             android:theme="@style/Theme.Troi.NoActionBar" />
         <activity
             android:name=".ui.ratemodel.SystemPredictionActivity"

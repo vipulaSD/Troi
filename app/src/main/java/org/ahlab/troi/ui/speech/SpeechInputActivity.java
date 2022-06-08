@@ -18,8 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.ahlab.troi.R;
 import org.ahlab.troi.databinding.ActivitySpeechInputBinding;
 import org.ahlab.troi.service.MLService;
+import org.ahlab.troi.ui.ratemodel.SystemPredictionActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -135,15 +137,44 @@ public class SpeechInputActivity extends AppCompatActivity {
           if (recording) {
             endRecording();
             if (isServiceBound) {
-              Log.i(
-                  TAG,
-                  String.format("Service Output: %s", Arrays.toString(mlService.makePrediction())));
+              int[] predictions = mlService.makePrediction();
+              Log.i(TAG, String.format("Service Output: %s", Arrays.toString(predictions)));
+              showPrediction(predictions);
             }
             recording = !recording;
           } else {
             startRecording();
           }
         });
+  }
+
+  private void showPrediction(int[] predictions) {
+
+    Intent intent = new Intent(getApplicationContext(), SystemPredictionActivity.class);
+    intent.putExtra(getString(R.string.key_pred_arousal), predictions[0]);
+    intent.putExtra(getString(R.string.key_pred_valence), predictions[1]);
+    intent.putExtra(getString(R.string.key_predicted_category), predictions[2]);
+
+    Bundle passThrough = getIntent().getExtras();
+    if (passThrough != null) {
+      intent.putExtra(
+          getString(R.string.key_self_report_mode),
+          passThrough.getInt(getString(R.string.key_self_report_mode), -1));
+      intent.putExtra(
+          getString(R.string.key_self_arousal),
+          passThrough.getInt(getString(R.string.key_self_arousal), -1));
+      intent.putExtra(
+          getString(R.string.key_self_valence),
+          passThrough.getInt(getString(R.string.key_self_valence), -1));
+      intent.putExtra(
+          getString(R.string.key_self_category),
+          passThrough.getInt(getString(R.string.key_self_category), -1));
+      intent.putExtra(
+          getString(R.string.key_self_category_custom),
+          passThrough.getString(getString(R.string.key_self_category_custom), ""));
+    }
+
+    startActivity(intent);
   }
 
   private void endRecording() {
